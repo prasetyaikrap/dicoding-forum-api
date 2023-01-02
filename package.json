@@ -3,11 +3,12 @@
   "version": "1.0.0",
   "description": "Dicoding Backend Engineer Expert",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "start": "node src/app.js",
     "start:dev": "nodemon src/app.js",
-    "test": "jest --setupFiles dotenv/config",
-    "test:watch": "jest --watchAll --coverage --setupFiles dotenv/config",
+    "test": "NODE_OPTIONS=--experimental-vm-modules jest --setupFiles dotenv/config",
+    "test:watch": "NODE_OPTIONS=--experimental-vm-modules jest --no-cache --coverage --watchAll --setupFiles dotenv/config -i",
     "migrate": "node-pg-migrate",
     "migrate:test": "node-pg-migrate -f config/database/test.json"
   },
