@@ -4,8 +4,28 @@
   "description": "Dicoding Backend Engineer Expert",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node src/app.js",
+    "start:dev": "nodemon src/app.js",
+    "test": "jest --setupFiles dotenv/config",
+    "test:watch": "jest --watchAll --coverage --setupFiles dotenv/config",
+    "migrate": "node-pg-migrate",
+    "migrate:test": "node-pg-migrate -f config/database/test.json"
   },
   "author": "Prasetya Ikra Priyadi",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "@hapi/hapi": "^21.1.0",
+    "@hapi/jwt": "^3.0.0",
+    "bcrypt": "^5.1.0",
+    "dotenv": "^16.0.3",
+    "nanoid": "^4.0.0",
+    "pg": "^8.8.0"
+  },
+  "devDependencies": {
+    "@types/jest": "^29.2.5",
+    "eslint": "^8.31.0",
+    "jest": "^29.3.1",
+    "node-pg-migrate": "^6.2.2",
+    "nodemon": "^2.0.20"
+  }
 }
