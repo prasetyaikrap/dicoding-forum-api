@@ -1,4 +1,4 @@
-import PasswordHash from "@Applications/security/PasswordHash";
+import PasswordHash from "#Applications/security/PasswordHash";
 
 describe("PasswordHash interface", () => {
   it("should throw error when invoke abstract behavior", async () => {

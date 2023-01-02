@@ -1,5 +1,5 @@
 /* istanbul ignore file */
-import pool from "@Infrastructures/database/postgres/pool";
+import pool from "#Infrastructures/database/postgres/pool";
 
 const UsersTableTestHelper = {
   async addUser({

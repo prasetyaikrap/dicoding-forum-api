@@ -1,4 +1,4 @@
-import NotFoundError from "@Commons/exceptions/NotFoundError";
+import NotFoundError from "#Commons/exceptions/NotFoundError";
 
 describe("NotFoundError", () => {
   it("Should Create NotFoundError Correctly", () => {

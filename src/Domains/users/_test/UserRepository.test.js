@@ -1,4 +1,4 @@
-import UserRepository from "@Domains/users/UserRepository";
+import UserRepository from "#Domains/users/UserRepository";
 
 describe("UserRepository interface", () => {
   it("should throw error when invoke abstract behavior", async () => {

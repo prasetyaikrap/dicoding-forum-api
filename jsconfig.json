@@ -1,17 +1,18 @@
 {
   "compilerOptions": {
-    "baseUrl": "./",
     "checkJs": false,
     "resolveJsonModule": true,
     "moduleResolution": "node",
-    "target": "es2020",
-    "module": "es2015",
+    "target": "ES6",
+    "module": "ESNext",
+    "baseUrl": "./",
     "paths": {
-      "@Applications/*": ["src/Applications/*"],
-      "@Commons/*": ["src/Commons/*"],
-      "@Domains/*": ["src/Domains/*"],
-      "@Infrastructures/*": ["src/Infrastructures/*"],
-      "@Interfaces/*": ["src/Interfaces/*"]
+      "#Applications/*": ["src/Applications/*"],
+      "#Commons/*": ["src/Commons/*"],
+      "#Domains/*": ["src/Domains/*"],
+      "#Infrastructures/*": ["src/Infrastructures/*"],
+      "#Interfaces/*": ["src/Interfaces/*"],
+      "#TestHelper/*": ["tests/*"]
     }
   },
   "exclude": [
@@ -20,6 +21,7 @@
     "build",
     ".vscode",
     ".nuxt",
+    "coverage",
     "jspm_packages",
     "tmp",
     "temp",
@@ -27,7 +29,6 @@
     ".npm",
     ".yarn"
   ],
-  "include": ["**/*.js", "**/*.jsx", "**/*.cjs"],
   "typeAcquisition": {
     "enable": true
   }

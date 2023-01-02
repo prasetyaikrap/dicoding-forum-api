@@ -1,4 +1,4 @@
-import RegisterUser from "@Domains/users/entities/RegisterUser";
+import RegisterUser from "#Domains/users/entities/RegisterUser";
 
 export default class AddUserUseCase {
   constructor({ userRepository, passwordHash }) {

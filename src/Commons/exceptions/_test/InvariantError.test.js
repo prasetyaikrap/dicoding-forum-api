@@ -1,4 +1,4 @@
-import InvariantError from "@Commons/exceptions/InvariantError";
+import InvariantError from "#Commons/exceptions/InvariantError";
 
 describe("InvariantError", () => {
   it("should create an error correctly", () => {

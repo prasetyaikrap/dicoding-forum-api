@@ -1,4 +1,4 @@
-import RegisteredUser from "@Domains/users/entities/RegisteredUser";
+import RegisteredUser from "#Domains/users/entities/RegisteredUser";
 
 describe("RegisteredUser Entities", () => {
   it("should throw error when payload did not contain needed property", () => {

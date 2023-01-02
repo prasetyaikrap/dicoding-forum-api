@@ -1,5 +1,5 @@
 /* istanbul ignore file */
-const { Pool } = require("pg");
+import pkg from "pg";
 
 const testConfig = {
   host: process.env.PGHOST_TEST,
@@ -10,6 +10,6 @@ const testConfig = {
 };
 
 const pool =
-  process.env.NODE_ENV === "test" ? new Pool(testConfig) : new Pool();
+  process.env.NODE_ENV === "test" ? new pkg.Pool(testConfig) : new pkg.Pool();
 
 export default pool;

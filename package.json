@@ -2,7 +2,7 @@
   "name": "dicoding-forum-api",
   "version": "1.0.0",
   "description": "Dicoding Backend Engineer Expert",
-  "main": "index.js",
+  "main": "src/app.js",
   "type": "module",
   "scripts": {
     "start": "node src/app.js",
@@ -17,8 +17,10 @@
   "dependencies": {
     "@hapi/hapi": "^21.1.0",
     "@hapi/jwt": "^3.0.0",
+    "auto-bind": "^5.0.1",
     "bcrypt": "^5.1.0",
     "dotenv": "^16.0.3",
+    "instances-container": "^2.0.6",
     "nanoid": "^4.0.0",
     "pg": "^8.8.0"
   },
@@ -28,5 +30,13 @@
     "jest": "^29.3.1",
     "node-pg-migrate": "^6.2.2",
     "nodemon": "^2.0.20"
+  },
+  "imports": {
+    "#Applications/*": "./src/Applications/*.js",
+    "#Commons/*": "./src/Commons/*.js",
+    "#Domains/*": "./src/Domains/*.js",
+    "#Infrastructures/*": "./src/Infrastructures/*.js",
+    "#Interfaces/*": "./src/Interfaces/*.js",
+    "#TestHelper/*": "./tests/*.js"
   }
 }

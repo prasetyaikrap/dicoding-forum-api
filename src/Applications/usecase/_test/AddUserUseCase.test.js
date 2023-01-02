@@ -1,8 +1,8 @@
-import RegisterUser from "@Domains/users/entities/RegisterUser";
-import RegisteredUser from "@Domains/users/entities/RegisteredUser";
-import UserRepository from "@Domains/users/UserRepository";
-import PasswordHash from "@Applications/security/PasswordHash";
-import AddUserUseCase from "@Applications/usecase/AddUserUseCase";
+import RegisterUser from "#Domains/users/entities/RegisterUser";
+import RegisteredUser from "#Domains/users/entities/RegisteredUser";
+import UserRepository from "#Domains/users/UserRepository";
+import PasswordHash from "#Applications/security/PasswordHash";
+import AddUserUseCase from "#Applications/usecase/AddUserUseCase";
 import { jest } from "@jest/globals";
 
 describe("AddUserUseCase", () => {

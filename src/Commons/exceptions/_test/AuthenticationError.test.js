@@ -1,4 +1,4 @@
-import AuthenticationError from "@Commons/exceptions/AuthenticationError";
+import AuthenticationError from "#Commons/exceptions/AuthenticationError";
 
 describe("AuthenticationError", () => {
   it("should create AuthenticationError correctly", () => {
