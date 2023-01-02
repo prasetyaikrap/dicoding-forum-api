@@ -3,5 +3,5 @@
   "password": "setyadicoding",
   "host": "localhost",
   "port": 5433,
-  "database": "authapi_test"
+  "database": "forumapi_test"
 }

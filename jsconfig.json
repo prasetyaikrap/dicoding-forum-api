@@ -1,0 +1,35 @@
+{
+  "compilerOptions": {
+    "baseUrl": "./",
+    "checkJs": false,
+    "resolveJsonModule": true,
+    "moduleResolution": "node",
+    "target": "es2020",
+    "module": "es2015",
+    "paths": {
+      "@Applications/*": ["src/Applications/*"],
+      "@Commons/*": ["src/Commons/*"],
+      "@Domains/*": ["src/Domains/*"],
+      "@Infrastructures/*": ["src/Infrastructures/*"],
+      "@Interfaces/*": ["src/Interfaces/*"]
+    }
+  },
+  "exclude": [
+    "dist",
+    "node_modules",
+    "build",
+    ".vscode",
+    ".nuxt",
+    "coverage",
+    "jspm_packages",
+    "tmp",
+    "temp",
+    "bower_components",
+    ".npm",
+    ".yarn"
+  ],
+  "include": ["**/*.js", "**/*.jsx"],
+  "typeAcquisition": {
+    "enable": true
+  }
+}
