@@ -9,7 +9,7 @@ describe("User Auth Entities", () => {
 
     // Action & Assert
     expect(() => new UserAuth(payload)).toThrowError(
-      "USER_AUTH.NOT_CONTAIN_NEEDED_DATA"
+      "USER_AUTH.NOT_CONTAIN_NEEDED_PROPERTY"
     );
   });
 

@@ -6,7 +6,7 @@ import PasswordHash from "#Applications/security/PasswordHash";
 import LoginUserUseCase from "#Applications/usecase/LoginUserUseCase";
 import { jest } from "@jest/globals";
 
-describe("GetAuthenticationUseCase", () => {
+describe("LoginUserUseCase", () => {
   it("should orchestrating the get authentication action correctly", async () => {
     // Arrange
     const useCasePayload = {

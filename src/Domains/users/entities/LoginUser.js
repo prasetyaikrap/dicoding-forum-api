@@ -10,12 +10,12 @@ export default class LoginUser {
     const { username, password } = payload;
     //Check required fields
     if (!username || !password) {
-      throw new Error("LOGIN_USER.NOT_CONTAIN_NEEDED_DATA");
+      throw new Error("LOGIN_USER.NOT_CONTAIN_NEEDED_PROPERTY");
     }
 
     //Check fields data type
     if (typeof username !== "string" || typeof password !== "string") {
-      throw new Error("LOGIN_USER.NOT_MEET_DATA_TYPE_SPESIFICATION");
+      throw new Error("LOGIN_USER.NOT_MEET_DATA_TYPE_SPECIFICATION");
     }
   }
 }

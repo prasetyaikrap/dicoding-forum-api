@@ -11,7 +11,7 @@ export default class AuthTokenManager {
     throw new Error("AUTH_TOKEN_MANAGER.METHOD_NOT_IMPLEMENTED");
   }
 
-  async decodePayload() {
+  async decodePayload(token) {
     throw new Error("AUTH_TOKEN_MANAGER.METHOD_NOT_IMPLEMENTED");
   }
 }

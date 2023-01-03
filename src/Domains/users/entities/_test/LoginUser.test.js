@@ -9,11 +9,11 @@ describe("Login User Entities", () => {
 
     // Action & Assert
     expect(() => new LoginUser(payload)).toThrowError(
-      "LOGIN_USER.NOT_CONTAIN_NEEDED_DATA"
+      "LOGIN_USER.NOT_CONTAIN_NEEDED_PROPERTY"
     );
   });
 
-  it("Should throw error when not meet data type spesification", () => {
+  it("Should throw error when not meet data type specification", () => {
     // Arrange
     const payload = {
       username: 12345,
@@ -22,7 +22,7 @@ describe("Login User Entities", () => {
 
     // Action & Assert
     expect(() => new LoginUser(payload)).toThrowError(
-      "LOGIN_USER.NOT_MEET_DATA_TYPE_SPESIFICATION"
+      "LOGIN_USER.NOT_MEET_DATA_TYPE_SPECIFICATION"
     );
   });
 

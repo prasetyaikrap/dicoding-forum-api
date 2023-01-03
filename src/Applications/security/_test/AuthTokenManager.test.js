@@ -15,8 +15,8 @@ describe("PasswordHash interface", () => {
     await expect(
       authTokenManager.verifyRefreshToken("accessToken")
     ).rejects.toThrowError("AUTH_TOKEN_MANAGER.METHOD_NOT_IMPLEMENTED");
-    await expect(authTokenManager.decodePayload()).rejects.toThrowError(
-      "AUTH_TOKEN_MANAGER.METHOD_NOT_IMPLEMENTED"
-    );
+    await expect(
+      authTokenManager.decodePayload("accessToken")
+    ).rejects.toThrowError("AUTH_TOKEN_MANAGER.METHOD_NOT_IMPLEMENTED");
   });
 });

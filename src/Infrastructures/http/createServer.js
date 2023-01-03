@@ -1,5 +1,9 @@
 import Hapi from "@hapi/hapi";
+
+//Interfaces
 import users from "#Interfaces/http/api/users/index";
+import authentications from "#Interfaces/http/api/authentications/index";
+
 import DomainErrorTranslator from "#Commons/exceptions/DomainErrorTranslator";
 import ClientError from "#Commons/exceptions/ClientError";
 
@@ -12,6 +16,10 @@ const createServer = async (container) => {
   await server.register([
     {
       plugin: users,
+      options: { container },
+    },
+    {
+      plugin: authentications,
       options: { container },
     },
   ]);
@@ -40,6 +48,7 @@ const createServer = async (container) => {
       const newResponse = h.response({
         status: "error",
         message: "terjadi kegagalan pada server kami",
+        error: response,
       });
       newResponse.code(500);
       return newResponse;

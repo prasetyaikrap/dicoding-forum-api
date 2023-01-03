@@ -9,7 +9,7 @@ export default class UserAuth {
   _verifyPayload(payload) {
     const { accessToken, refreshToken } = payload;
     if (!accessToken || !refreshToken) {
-      throw new Error("USER_AUTH.NOT_CONTAIN_NEEDED_DATA");
+      throw new Error("USER_AUTH.NOT_CONTAIN_NEEDED_PROPERTY");
     }
 
     if (typeof accessToken !== "string" || typeof refreshToken !== "string") {
