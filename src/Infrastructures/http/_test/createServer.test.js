@@ -1,9 +1,10 @@
 import pool from "#Infrastructures/database/postgres/pool";
-import UsersTableTestHelper from "#TestHelper/UserTableTestHelper";
 import container from "#Infrastructures/container";
 import createServer from "#Infrastructures/http/createServer";
-import AuthTableTestHelper from "#TestHelper/AuthTableTestHelper";
 import AuthTokenManager from "#Applications/security/AuthTokenManager";
+import AuthTableTestHelper from "#TestHelper/AuthTableTestHelper";
+import UsersTableTestHelper from "#TestHelper/UserTableTestHelper";
+import ThreadsTableTestHelper from "#TestHelper/ThreadsTableTestHelper";
 
 describe("HTTP server", () => {
   afterAll(async () => {
@@ -13,6 +14,7 @@ describe("HTTP server", () => {
   afterEach(async () => {
     await UsersTableTestHelper.cleanTable();
     await AuthTableTestHelper.cleanTable();
+    await ThreadsTableTestHelper.cleanTable();
   });
 
   it("should response 404 when request unregistered route", async () => {
@@ -510,6 +512,62 @@ describe("HTTP server", () => {
         expect(response.statusCode).toEqual(400);
         expect(responseJson.status).toEqual("fail");
         expect(responseJson.message).toEqual("refresh token harus string");
+      });
+    });
+  });
+
+  describe("/threads endpoint", () => {
+    describe("When POST /threads", () => {
+      it("should response success and get thread short detail", async () => {
+        // Arrange
+        const requestPayload = {
+          title: "new title thread",
+          body: "new body thread",
+        };
+        const server = await createServer(container);
+        // Add new user
+        await server.inject({
+          method: "POST",
+          url: "/users",
+          payload: {
+            username: "dicoding",
+            password: "secretPassword",
+            fullname: "Dicoding Indonesia",
+          },
+        });
+        // getAccessToken
+        const authResponse = await server.inject({
+          method: "POST",
+          url: "/authentications",
+          payload: {
+            username: "dicoding",
+            password: "secretPassword",
+          },
+        });
+
+        const {
+          data: { accessToken },
+        } = JSON.parse(authResponse.payload);
+
+        // Action
+        const addThreadResponse = await server.inject({
+          method: "POST",
+          url: "/threads",
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+          payload: requestPayload,
+        });
+
+        // Assert
+        const { status, data } = JSON.parse(addThreadResponse.payload);
+        expect(addThreadResponse.statusCode).toEqual(201);
+        expect(status).toEqual("success");
+        expect(data).toBeInstanceOf(Object);
+        expect(data.addedThread).toBeInstanceOf(Object);
+        expect(data.addedThread.id).toBeDefined();
+        expect(data.addedThread.title).toBeDefined();
+        expect(data.addedThread.owner).toBeDefined();
       });
     });
   });

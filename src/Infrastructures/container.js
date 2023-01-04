@@ -8,8 +8,12 @@ import pool from "#Infrastructures/database/postgres/pool";
 import Jwt from "@hapi/jwt";
 
 // service (repository, helper, manager, etc)
+import UserRepository from "#Domains/users/UserRepository";
+import AuthenticationRepository from "#Domains/authentications/AuthenticationsRepository";
+import ThreadRepository from "#Domains/threads/ThreadsRepository";
 import UserRepositoryPostgres from "#Infrastructures/repository/UserRepositoryPostgres";
 import AuthRepositoryPostgres from "#Infrastructures/repository/AuthRepositoryPostgres";
+import ThreadRepositoryPostgres from "#Infrastructures/repository/ThreadRepositoryPostgres";
 import BcryptPasswordHash from "#Infrastructures/security/BcryptPasswordHash";
 import JwtTokenManager from "#Infrastructures/security/JwtTokenManager";
 
@@ -17,11 +21,10 @@ import JwtTokenManager from "#Infrastructures/security/JwtTokenManager";
 import AddUserUseCase from "#Applications/usecase/AddUserUseCase";
 import LoginUserUseCase from "#Applications/usecase/LoginUserUseCase";
 import LogoutUserUseCase from "#Applications/usecase/LogoutUserUseCase";
-import UserRepository from "#Domains/users/UserRepository";
-import AuthenticationRepository from "#Domains/authentications/AuthenticationsRepository";
 import PasswordHash from "#Applications/security/PasswordHash";
 import AuthTokenManager from "#Applications/security/AuthTokenManager";
 import RefreshAuthUseCase from "#Applications/usecase/RefreshAuthUseCase";
+import AddThreadUseCase from "#Applications/usecase/AddThreadUseCase";
 
 // creating container
 const container = createContainer();
@@ -31,6 +34,20 @@ container.register([
   {
     key: UserRepository.name,
     Class: UserRepositoryPostgres,
+    parameter: {
+      dependencies: [
+        {
+          concrete: pool,
+        },
+        {
+          concrete: nanoid,
+        },
+      ],
+    },
+  },
+  {
+    key: ThreadRepository.name,
+    Class: ThreadRepositoryPostgres,
     parameter: {
       dependencies: [
         {
@@ -147,6 +164,19 @@ container.register([
         {
           name: "authTokenManager",
           internal: AuthTokenManager.name,
+        },
+      ],
+    },
+  },
+  {
+    key: AddThreadUseCase.name,
+    Class: AddThreadUseCase,
+    parameter: {
+      injectType: "destructuring",
+      dependencies: [
+        {
+          name: "threadRepository",
+          internal: ThreadRepository.name,
         },
       ],
     },

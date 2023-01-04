@@ -1,8 +1,10 @@
 import Hapi from "@hapi/hapi";
+import Jwt from "@hapi/jwt";
 
 //Interfaces
 import users from "#Interfaces/http/api/users/index";
 import authentications from "#Interfaces/http/api/authentications/index";
+import threads from "#Interfaces/http/api/threads/index";
 
 import DomainErrorTranslator from "#Commons/exceptions/DomainErrorTranslator";
 import ClientError from "#Commons/exceptions/ClientError";
@@ -11,6 +13,35 @@ const createServer = async (container) => {
   const server = Hapi.server({
     host: process.env.HOST,
     port: process.env.PORT,
+    routes: {
+      cors: {
+        origin: ["*"],
+      },
+    },
+  });
+
+  // External Plugin
+  await server.register([
+    {
+      plugin: Jwt,
+    },
+  ]);
+
+  // JWT Auth Strategy
+  server.auth.strategy("forumapi_jwt", "jwt", {
+    keys: process.env.ACCESS_TOKEN_KEY,
+    verify: {
+      aud: false,
+      iss: false,
+      sub: false,
+      maxAgeSec: process.env.TOKEN_MAX_AGE,
+    },
+    validate: (artifacts) => ({
+      isValid: true,
+      credentials: {
+        id: artifacts.decoded.payload.id,
+      },
+    }),
   });
 
   await server.register([
@@ -20,6 +51,10 @@ const createServer = async (container) => {
     },
     {
       plugin: authentications,
+      options: { container },
+    },
+    {
+      plugin: threads,
       options: { container },
     },
   ]);

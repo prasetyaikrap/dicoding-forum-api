@@ -21,7 +21,7 @@ const AuthTableTestHelper = {
     return result.rows;
   },
   async cleanTable() {
-    await pool.query("TRUNCATE TABLE authentications");
+    await pool.query("TRUNCATE TABLE authentications CASCADE");
   },
 };
 
