@@ -4,8 +4,8 @@ import ThreadRepositoryPostgres from "#Infrastructures/repository/ThreadReposito
 import ThreadsTableTestHelper from "#TestHelper/ThreadsTableTestHelper";
 import UserRepositoryPostgres from "#Infrastructures/repository/UserRepositoryPostgres";
 import UsersTableTestHelper from "#TestHelper/UserTableTestHelper";
-import InvariantError from "#Commons/exceptions/InvariantError";
 import NotFoundError from "#Commons/exceptions/NotFoundError";
+import AuthorizationError from "#Commons/exceptions/AuthorizationError";
 
 describe("ThreadRepositoryPostgres", () => {
   afterEach(async () => {
@@ -354,5 +354,200 @@ describe("ThreadRepositoryPostgres", () => {
         threadRepositoryPostgres.deleteReplyOnComment(deleteReply)
       ).rejects.toThrow(NotFoundError);
     });
+  });
+
+  describe("verifyCommentOwner function", () => {
+    it("should not throw authorization error when comment owner is verified", async () => {
+      // Arrange
+      const fakeIdGenerator = () => "12345";
+      const threadRepositoryPostgres = new ThreadRepositoryPostgres(
+        pool,
+        fakeIdGenerator
+      );
+
+      // add thread
+      const addThread = {
+        ownerId: "user-12345",
+        title: "new test title",
+        body: "new test body",
+      };
+      await threadRepositoryPostgres.addNewThread(addThread);
+
+      // add comment
+      const addComment = {
+        ownerId: "user-12345",
+        threadId: "thread-12345",
+        content: "new comment on thread thread-12345 #1",
+      };
+      await threadRepositoryPostgres.addCommentOnThread(addComment);
+      const comments = await ThreadsTableTestHelper.findCommentById(
+        "comment-12345"
+      );
+
+      // verify comment owner
+      const verifyCommentOwner = {
+        threadId: addComment.threadId,
+        commentId: "comment-12345",
+        ownerId: addComment.ownerId,
+      };
+
+      // Action & Assert
+      expect(comments).toHaveLength(1);
+      await expect(
+        threadRepositoryPostgres.verifyCommentOwner(verifyCommentOwner)
+      ).resolves.not.toThrow(AuthorizationError);
+    });
+
+    it("should throw authorization error when failed to verify comment owner", async () => {
+      // Arrange
+      const fakeIdGenerator = () => "12345";
+      const threadRepositoryPostgres = new ThreadRepositoryPostgres(
+        pool,
+        fakeIdGenerator
+      );
+
+      // add thread
+      const addThread = {
+        ownerId: "user-12345",
+        title: "new test title",
+        body: "new test body",
+      };
+      await threadRepositoryPostgres.addNewThread(addThread);
+
+      // add comment
+      const addComment = {
+        ownerId: "user-12345",
+        threadId: "thread-12345",
+        content: "new comment on thread thread-12345 #1",
+      };
+      await threadRepositoryPostgres.addCommentOnThread(addComment);
+      const comments = await ThreadsTableTestHelper.findCommentById(
+        "comment-12345"
+      );
+
+      // verify comment owner
+      const verifyCommentOwner = {
+        threadId: addComment.threadId,
+        commentId: "comment-12345",
+        ownerId: "user-56789",
+      };
+
+      // Action & Assert
+      expect(comments).toHaveLength(1);
+      await expect(() =>
+        threadRepositoryPostgres.verifyCommentOwner(verifyCommentOwner)
+      ).rejects.toThrow(AuthorizationError);
+    });
+  });
+
+  describe("verifyReplyOwner function", () => {
+    it("should verify reply owner correctly", async () => {
+      // Arrange
+      const fakeIdGenerator = () => "12345";
+      const threadRepositoryPostgres = new ThreadRepositoryPostgres(
+        pool,
+        fakeIdGenerator
+      );
+
+      // add thread
+      const addThread = {
+        ownerId: "user-12345",
+        title: "new test title",
+        body: "new test body",
+      };
+      await threadRepositoryPostgres.addNewThread(addThread);
+
+      // add comment
+      const addComment = {
+        ownerId: "user-12345",
+        threadId: "thread-12345",
+        content: "new comment on thread thread-12345 #1",
+      };
+
+      await threadRepositoryPostgres.addCommentOnThread(addComment);
+
+      // add reply
+      const addReply = {
+        ownerId: "user-12345",
+        threadId: "thread-12345",
+        replyCommentId: "comment-12345",
+        content: "new reply on comment comment-12345 #1",
+      };
+      await threadRepositoryPostgres.addReplyOnComment(addReply);
+      const replies = await ThreadsTableTestHelper.findCommentById(
+        "reply-12345"
+      );
+
+      // verify reply owner
+      const verifyReplyOwner = {
+        threadId: addReply.threadId,
+        commentId: "reply-12345",
+        replyCommentId: addReply.replyCommentId,
+        ownerId: addReply.ownerId,
+      };
+
+      // Action & Assert
+      expect(replies).toHaveLength(1);
+      expect(
+        threadRepositoryPostgres.verifyReplyOwner(verifyReplyOwner)
+      ).resolves.not.toThrow(AuthorizationError);
+    });
+
+    it("should throw authorization error when failed to verify reply owner", async () => {
+      // Arrange
+      const fakeIdGenerator = () => "12345";
+      const threadRepositoryPostgres = new ThreadRepositoryPostgres(
+        pool,
+        fakeIdGenerator
+      );
+
+      // add thread
+      const addThread = {
+        ownerId: "user-12345",
+        title: "new test title",
+        body: "new test body",
+      };
+      await threadRepositoryPostgres.addNewThread(addThread);
+
+      // add comment
+      const addComment = {
+        ownerId: "user-12345",
+        threadId: "thread-12345",
+        content: "new comment on thread thread-12345 #1",
+      };
+
+      await threadRepositoryPostgres.addCommentOnThread(addComment);
+
+      // add reply
+      const addReply = {
+        ownerId: "user-12345",
+        threadId: "thread-12345",
+        replyCommentId: "comment-12345",
+        content: "new reply on comment comment-12345 #1",
+      };
+      await threadRepositoryPostgres.addReplyOnComment(addReply);
+      const replies = await ThreadsTableTestHelper.findCommentById(
+        "reply-12345"
+      );
+
+      // verify reply owner
+      const verifyReplyOwner = {
+        threadId: addReply.threadId,
+        commentId: "reply-12345",
+        replyCommentId: addReply.replyCommentId,
+        ownerId: "user-56789",
+      };
+
+      // Action & Assert
+      expect(replies).toHaveLength(1);
+      expect(() =>
+        threadRepositoryPostgres.verifyReplyOwner(verifyReplyOwner)
+      ).rejects.toThrow(AuthorizationError);
+    });
+  });
+
+  describe("getThreadById function", () => {
+    it("should return query result properly", async () => {});
+    it("should throw Not Found Error when thread is not exist", async () => {});
   });
 });
