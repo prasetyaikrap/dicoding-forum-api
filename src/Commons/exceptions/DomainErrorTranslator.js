@@ -35,7 +35,13 @@ DomainErrorTranslator._directories = {
     "Need payload contain content of comment"
   ),
   "ADD_COMMENT_ON_THREAD.NOT_MEET_DATA_TYPE_SPECIFICATION": new InvariantError(
-    "Need payload contain content as string"
+    "Need payload contain comment content as string"
+  ),
+  "ADD_REPLY_ON_COMMENT.NOT_CONTAIN_NEEDED_PROPERTY": new InvariantError(
+    "Need payload contain content of reply"
+  ),
+  "ADD_REPLY_ON_COMMENT.NOT_MEET_DATA_TYPE_SPECIFICATION": new InvariantError(
+    "Need payload contain reply content as string"
   ),
   "REFRESH_AUTHENTICATION_USE_CASE.NOT_CONTAIN_REFRESH_TOKEN":
     new InvariantError("harus mengirimkan token refresh"),
