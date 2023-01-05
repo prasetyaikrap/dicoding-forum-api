@@ -31,6 +31,12 @@ DomainErrorTranslator._directories = {
   "ADD_THREAD.NOT_MEET_DATA_TYPE_SPECIFICATION": new InvariantError(
     "Need payload contain title as string and body as string"
   ),
+  "ADD_COMMENT_ON_THREAD.NOT_CONTAIN_NEEDED_PROPERTY": new InvariantError(
+    "Need payload contain content of comment"
+  ),
+  "ADD_COMMENT_ON_THREAD.NOT_MEET_DATA_TYPE_SPECIFICATION": new InvariantError(
+    "Need payload contain content as string"
+  ),
   "REFRESH_AUTHENTICATION_USE_CASE.NOT_CONTAIN_REFRESH_TOKEN":
     new InvariantError("harus mengirimkan token refresh"),
   "REFRESH_AUTHENTICATION_USE_CASE.PAYLOAD_NOT_MEET_DATA_TYPE_SPECIFICATION":

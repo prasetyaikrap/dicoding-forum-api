@@ -1,6 +1,6 @@
-import LoginUserUseCase from "#Applications/usecase/LoginUserUseCase";
-import LogoutUserUseCase from "#Applications/usecase/LogoutUserUseCase";
-import RefreshAuthUseCase from "#Applications/usecase/RefreshAuthUseCase";
+import LoginUserUseCase from "#Applications/usecase/authentications/LoginUserUseCase";
+import LogoutUserUseCase from "#Applications/usecase/authentications/LogoutUserUseCase";
+import RefreshAuthUseCase from "#Applications/usecase/authentications/RefreshAuthUseCase";
 import autoBind from "auto-bind";
 
 export default class AuthenticationsHandler {

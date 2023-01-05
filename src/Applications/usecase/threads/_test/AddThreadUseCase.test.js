@@ -1,4 +1,4 @@
-import AddThreadUseCase from "#Applications/usecase/AddThreadUseCase";
+import AddThreadUseCase from "#Applications/usecase/threads/AddThreadUseCase";
 import ThreadRepository from "#Domains/threads/ThreadsRepository";
 import { jest } from "@jest/globals";
 

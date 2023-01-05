@@ -18,13 +18,13 @@ import BcryptPasswordHash from "#Infrastructures/security/BcryptPasswordHash";
 import JwtTokenManager from "#Infrastructures/security/JwtTokenManager";
 
 // use case
-import AddUserUseCase from "#Applications/usecase/AddUserUseCase";
-import LoginUserUseCase from "#Applications/usecase/LoginUserUseCase";
-import LogoutUserUseCase from "#Applications/usecase/LogoutUserUseCase";
+import AddUserUseCase from "#Applications/usecase/users/AddUserUseCase";
+import LoginUserUseCase from "#Applications/usecase/authentications/LoginUserUseCase";
+import LogoutUserUseCase from "#Applications/usecase/authentications/LogoutUserUseCase";
 import PasswordHash from "#Applications/security/PasswordHash";
 import AuthTokenManager from "#Applications/security/AuthTokenManager";
-import RefreshAuthUseCase from "#Applications/usecase/RefreshAuthUseCase";
-import AddThreadUseCase from "#Applications/usecase/AddThreadUseCase";
+import RefreshAuthUseCase from "#Applications/usecase/authentications/RefreshAuthUseCase";
+import AddThreadUseCase from "#Applications/usecase/threads/AddThreadUseCase";
 
 // creating container
 const container = createContainer();

@@ -24,7 +24,7 @@ exports.up = (pgm) => {
       references: "threads",
       onDelete: "CASCADE",
     },
-    comment_id: {
+    reply_comment_id: {
       type: "VARCHAR(50)",
     },
     is_deleted: {

@@ -1,4 +1,4 @@
-import AddUserUseCase from "#Applications/usecase/AddUserUseCase";
+import AddUserUseCase from "#Applications/usecase/users/AddUserUseCase";
 import autoBind from "auto-bind";
 
 export default class UsersHandler {

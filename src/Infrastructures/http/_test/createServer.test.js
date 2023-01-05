@@ -5,6 +5,7 @@ import AuthTokenManager from "#Applications/security/AuthTokenManager";
 import AuthTableTestHelper from "#TestHelper/AuthTableTestHelper";
 import UsersTableTestHelper from "#TestHelper/UserTableTestHelper";
 import ThreadsTableTestHelper from "#TestHelper/ThreadsTableTestHelper";
+import ServerTestHelper from "#TestHelper/ServerTestHelper";
 
 describe("HTTP server", () => {
   afterAll(async () => {
@@ -525,29 +526,8 @@ describe("HTTP server", () => {
           body: "new body thread",
         };
         const server = await createServer(container);
-        // Add new user
-        await server.inject({
-          method: "POST",
-          url: "/users",
-          payload: {
-            username: "dicoding",
-            password: "secretPassword",
-            fullname: "Dicoding Indonesia",
-          },
-        });
-        // getAccessToken
-        const authResponse = await server.inject({
-          method: "POST",
-          url: "/authentications",
-          payload: {
-            username: "dicoding",
-            password: "secretPassword",
-          },
-        });
-
-        const {
-          data: { accessToken },
-        } = JSON.parse(authResponse.payload);
+        // Get access token
+        const accessToken = await ServerTestHelper.getAccessToken(server);
 
         // Action
         const addThreadResponse = await server.inject({
@@ -568,6 +548,82 @@ describe("HTTP server", () => {
         expect(data.addedThread.id).toBeDefined();
         expect(data.addedThread.title).toBeDefined();
         expect(data.addedThread.owner).toBeDefined();
+      });
+      it("should throw error when not contain auth permission", async () => {
+        // Arrange
+        const requestPayload = {
+          title: "new title thread",
+          body: "new body thread",
+        };
+        const server = await createServer(container);
+        // Get access token
+
+        // Action
+        const addThreadResponse = await server.inject({
+          method: "POST",
+          url: "/threads",
+          payload: requestPayload,
+        });
+
+        // Assert
+        const { status, message } = JSON.parse(addThreadResponse.payload);
+        expect(addThreadResponse.statusCode).toEqual(401);
+        expect(message).toEqual("Missing authentication");
+      });
+      it("should throw error when not contain needed property", async () => {
+        // Arrange
+        const requestPayload = {
+          title: "new title thread",
+        };
+        const server = await createServer(container);
+        // Get access token
+        const accessToken = await ServerTestHelper.getAccessToken(server);
+
+        // Action
+        const addThreadResponse = await server.inject({
+          method: "POST",
+          url: "/threads",
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+          payload: requestPayload,
+        });
+
+        // Assert
+        const { status, message } = JSON.parse(addThreadResponse.payload);
+        expect(addThreadResponse.statusCode).toEqual(400);
+        expect(status).toEqual("fail");
+        expect(message).toEqual(
+          "Need payload contain title and body of thread"
+        );
+      });
+      it("should throw error when not meet data type spesifications", async () => {
+        // Arrange
+        const requestPayload = {
+          title: "new title thread",
+          body: 123456,
+        };
+        const server = await createServer(container);
+        // Get access token
+        const accessToken = await ServerTestHelper.getAccessToken(server);
+
+        // Action
+        const addThreadResponse = await server.inject({
+          method: "POST",
+          url: "/threads",
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+          payload: requestPayload,
+        });
+
+        // Assert
+        const { status, message } = JSON.parse(addThreadResponse.payload);
+        expect(addThreadResponse.statusCode).toEqual(400);
+        expect(status).toEqual("fail");
+        expect(message).toEqual(
+          "Need payload contain title as string and body as string"
+        );
       });
     });
   });

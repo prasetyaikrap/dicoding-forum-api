@@ -1,5 +1,5 @@
 import AuthTokenManager from "#Applications/security/AuthTokenManager";
-import RefreshAuthUseCase from "#Applications/usecase/RefreshAuthUseCase";
+import RefreshAuthUseCase from "#Applications/usecase/authentications/RefreshAuthUseCase";
 import AuthenticationRepository from "#Domains/authentications/AuthenticationsRepository";
 import { jest } from "@jest/globals";
 

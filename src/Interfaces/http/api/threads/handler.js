@@ -1,4 +1,4 @@
-import AddThreadUseCase from "#Applications/usecase/AddThreadUseCase";
+import AddThreadUseCase from "#Applications/usecase/threads/AddThreadUseCase";
 import autoBind from "auto-bind";
 
 export default class ThreadsHandler {

@@ -1,4 +1,4 @@
-import LogoutUserUseCase from "#Applications/usecase/LogoutUserUseCase";
+import LogoutUserUseCase from "#Applications/usecase/authentications/LogoutUserUseCase";
 import AuthenticationRepository from "#Domains/authentications/AuthenticationsRepository";
 import { jest } from "@jest/globals";
 

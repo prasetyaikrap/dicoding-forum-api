@@ -24,6 +24,9 @@ describe("ThredRepository", () => {
     await expect(threadRepository.verifyCommentOwner({})).rejects.toThrowError(
       "THREAD_REPOSITORY.METHOD_NOT_IMPLEMENTED"
     );
+    await expect(threadRepository.verifyReplyOwner({})).rejects.toThrowError(
+      "THREAD_REPOSITORY.METHOD_NOT_IMPLEMENTED"
+    );
     await expect(threadRepository.getThreadById({})).rejects.toThrowError(
       "THREAD_REPOSITORY.METHOD_NOT_IMPLEMENTED"
     );

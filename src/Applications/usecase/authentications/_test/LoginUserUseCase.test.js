@@ -3,7 +3,7 @@ import UserRepository from "#Domains/users/UserRepository";
 import AuthenticationRepository from "#Domains/authentications/AuthenticationsRepository";
 import AuthTokenManager from "#Applications/security/AuthTokenManager";
 import PasswordHash from "#Applications/security/PasswordHash";
-import LoginUserUseCase from "#Applications/usecase/LoginUserUseCase";
+import LoginUserUseCase from "#Applications/usecase/authentications/LoginUserUseCase";
 import { jest } from "@jest/globals";
 
 describe("LoginUserUseCase", () => {
