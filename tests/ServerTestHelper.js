@@ -1,15 +1,22 @@
 /* istanbul ignore file */
 
 const ServerTestHelper = {
-  async getAccessToken(server) {
+  async getAccessToken(
+    server,
+    userPayload = {
+      username: "dicoding",
+      password: "secretPassword",
+      fullname: "Dicoding Indonesia",
+    }
+  ) {
     // Add new user
     await server.inject({
       method: "POST",
       url: "/users",
       payload: {
-        username: "dicoding",
-        password: "secretPassword",
-        fullname: "Dicoding Indonesia",
+        username: userPayload.username,
+        password: userPayload.password,
+        fullname: userPayload.fullname,
       },
     });
     // getAccessToken
@@ -17,8 +24,8 @@ const ServerTestHelper = {
       method: "POST",
       url: "/authentications",
       payload: {
-        username: "dicoding",
-        password: "secretPassword",
+        username: userPayload.username,
+        password: userPayload.password,
       },
     });
 

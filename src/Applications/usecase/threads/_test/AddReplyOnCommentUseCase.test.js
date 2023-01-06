@@ -9,18 +9,21 @@ describe("AddCommentOnThreadUseCase", () => {
       credentialId: "user-12345",
       threadId: "thread-12345",
       commentId: "comment-12345",
-      commentPayload: {
+      replyPayload: {
         content: "new reply on comment comment-12345",
       },
     };
     const expectedAddedReplyOnComment = {
       id: "reply-12345",
-      content: useCasePayload.commentPayload.content,
+      content: useCasePayload.replyPayload.content,
       owner: useCasePayload.credentialId,
     };
 
     // Mock
     const mockThreadRepository = new ThreadRepository();
+    mockThreadRepository.verifyCommentExistence = jest
+      .fn()
+      .mockImplementation(() => Promise.resolve());
     mockThreadRepository.addReplyOnComment = jest
       .fn()
       .mockImplementation(() => Promise.resolve(expectedAddedReplyOnComment));
@@ -36,8 +39,8 @@ describe("AddCommentOnThreadUseCase", () => {
     expect(mockThreadRepository.addReplyOnComment).toBeCalledWith({
       ownerId: useCasePayload.credentialId,
       threadId: useCasePayload.threadId,
-      commentId: useCasePayload.commentId,
-      content: useCasePayload.commentPayload.content,
+      replyCommentId: useCasePayload.commentId,
+      content: useCasePayload.replyPayload.content,
     });
     expect(addedReply).toStrictEqual(expectedAddedReplyOnComment);
   });

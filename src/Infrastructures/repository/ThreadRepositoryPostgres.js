@@ -51,7 +51,7 @@ export default class ThreadRepositoryPostgres extends ThreadRepository {
     };
     const result = await this._pool.query(query);
     if (!result.rowCount) {
-      throw new NotFoundError("Failed to delete. Comment not found.");
+      throw new NotFoundError("Failed to delete. Thread not found.");
     }
   }
 
@@ -79,7 +79,7 @@ export default class ThreadRepositoryPostgres extends ThreadRepository {
     };
     const result = await this._pool.query(query);
     if (!result.rowCount) {
-      throw new NotFoundError("Failed to delete. Comment not found.");
+      throw new NotFoundError("Failed to delete. Thread or Comment not found.");
     }
   }
 
@@ -106,19 +106,20 @@ export default class ThreadRepositoryPostgres extends ThreadRepository {
             ORDER BY tc.created_at ASC`,
       values: [threadId],
     };
-    const result = this._pool.query(query);
+    const result = await this._pool.query(query);
+
     if (!result.rowCount) {
       throw new NotFoundError("Failed to get thread details. Thread not found");
     }
     return new GetThreadDetails(result.rows);
   }
 
-  async verifyCommentOwner({ threadId, commentId, ownerId }) {
+  async verifyCommentOwner({ commentId, ownerId }) {
     const query = {
       text: `SELECT id 
             FROM thread_comments tc 
-            WHERE tc.id = $1 AND tc.thread_id = $2 AND tc.owner = $3`,
-      values: [commentId, threadId, ownerId],
+            WHERE tc.id = $1 AND tc.owner = $2`,
+      values: [commentId, ownerId],
     };
 
     const result = await this._pool.query(query);
@@ -127,17 +128,25 @@ export default class ThreadRepositoryPostgres extends ThreadRepository {
     }
   }
 
-  async verifyReplyOwner({ threadId, commentId, replyCommentId, ownerId }) {
+  async verifyThreadExistence({ threadId }) {
     const query = {
-      text: `SELECT id 
-            FROM thread_comments tc 
-            WHERE tc.id = $1 AND tc.thread_id = $2 AND tc.reply_comment_id = $3 AND tc.owner = $4`,
-      values: [commentId, threadId, replyCommentId, ownerId],
+      text: `SELECT id FROM threads t WHERE t.id = $1`,
+      values: [threadId],
     };
-
     const result = await this._pool.query(query);
     if (!result.rowCount) {
-      throw new AuthorizationError("Not Authorized");
+      throw new NotFoundError("Thread is not exist");
+    }
+  }
+
+  async verifyCommentExistence({ threadId, commentId }) {
+    const query = {
+      text: `SELECT id FROM thread_comments tc WHERE tc.thread_id = $1 AND tc.id = $2`,
+      values: [threadId, commentId],
+    };
+    const result = await this._pool.query(query);
+    if (!result.rowCount) {
+      throw new NotFoundError("Comment is not exist");
     }
   }
 }

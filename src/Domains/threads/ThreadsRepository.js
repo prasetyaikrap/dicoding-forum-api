@@ -23,7 +23,11 @@ export default class ThreadRepository {
     throw new Error("THREAD_REPOSITORY.METHOD_NOT_IMPLEMENTED");
   }
 
-  async verifyReplyOwner({ threadId, commentId, replyCommentId, ownerId }) {
+  async verifyThreadExistence({ threadId }) {
+    throw new Error("THREAD_REPOSITORY.METHOD_NOT_IMPLEMENTED");
+  }
+
+  async verifyCommentExistence({ threadId, commentId }) {
     throw new Error("THREAD_REPOSITORY.METHOD_NOT_IMPLEMENTED");
   }
 

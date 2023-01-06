@@ -25,6 +25,11 @@ import PasswordHash from "#Applications/security/PasswordHash";
 import AuthTokenManager from "#Applications/security/AuthTokenManager";
 import RefreshAuthUseCase from "#Applications/usecase/authentications/RefreshAuthUseCase";
 import AddThreadUseCase from "#Applications/usecase/threads/AddThreadUseCase";
+import AddCommentOnThreadUseCase from "#Applications/usecase/threads/AddCommentOnThreadUseCase";
+import AddReplyOnCommentUseCase from "#Applications/usecase/threads/AddReplyOnCommentUseCase";
+import DeleteCommentOnThreadUseCase from "#Applications/usecase/threads/DeleteCommentOnThreadUseCase";
+import DeleteReplyOnCommentUseCase from "#Applications/usecase/threads/DeleteReplyOnCommentUseCase";
+import GetThreadDetailsUseCase from "#Applications/usecase/threads/GetThreadDetailsUseCase";
 
 // creating container
 const container = createContainer();
@@ -171,6 +176,71 @@ container.register([
   {
     key: AddThreadUseCase.name,
     Class: AddThreadUseCase,
+    parameter: {
+      injectType: "destructuring",
+      dependencies: [
+        {
+          name: "threadRepository",
+          internal: ThreadRepository.name,
+        },
+      ],
+    },
+  },
+  {
+    key: AddCommentOnThreadUseCase.name,
+    Class: AddCommentOnThreadUseCase,
+    parameter: {
+      injectType: "destructuring",
+      dependencies: [
+        {
+          name: "threadRepository",
+          internal: ThreadRepository.name,
+        },
+      ],
+    },
+  },
+  {
+    key: AddReplyOnCommentUseCase.name,
+    Class: AddReplyOnCommentUseCase,
+    parameter: {
+      injectType: "destructuring",
+      dependencies: [
+        {
+          name: "threadRepository",
+          internal: ThreadRepository.name,
+        },
+      ],
+    },
+  },
+  {
+    key: DeleteCommentOnThreadUseCase.name,
+    Class: DeleteCommentOnThreadUseCase,
+    parameter: {
+      injectType: "destructuring",
+      dependencies: [
+        {
+          name: "threadRepository",
+          internal: ThreadRepository.name,
+        },
+      ],
+    },
+  },
+  {
+    key: DeleteReplyOnCommentUseCase.name,
+    Class: DeleteReplyOnCommentUseCase,
+    parameter: {
+      injectType: "destructuring",
+      dependencies: [
+        {
+          name: "threadRepository",
+          internal: ThreadRepository.name,
+        },
+      ],
+    },
+  },
+  {
+    key: GetThreadDetailsUseCase.name,
+    Class: GetThreadDetailsUseCase,
     parameter: {
       injectType: "destructuring",
       dependencies: [

@@ -6,17 +6,22 @@ export default class AddReplyOnCommentUseCase {
   }
 
   async execute(useCasePayload) {
-    const { credentialId, threadId, commentId, commentPayload } =
-      useCasePayload;
+    const { credentialId, threadId, commentId, replyPayload } = useCasePayload;
 
     // verify payload
-    const { content } = new AddReplyOnComment(commentPayload);
+    const { content } = new AddReplyOnComment(replyPayload);
+
+    // verify thread existence
+    await this._threadRepository.verifyCommentExistence({
+      threadId,
+      commentId,
+    });
 
     // add comment to database
     return this._threadRepository.addReplyOnComment({
       ownerId: credentialId,
       threadId,
-      commentId,
+      replyCommentId: commentId,
       content,
     });
   }

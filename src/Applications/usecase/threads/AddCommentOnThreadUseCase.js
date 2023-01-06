@@ -11,6 +11,9 @@ export default class AddCommentOnThreadUseCase {
     // verify payload
     const { content } = new AddCommentOnThread(commentPayload);
 
+    // verify thread existence
+    await this._threadRepository.verifyThreadExistence({ threadId });
+
     // add comment to database
     return this._threadRepository.addCommentOnThread({
       ownerId: credentialId,
