@@ -1,5 +1,5 @@
 import AddCommentOnThreadUseCase from "#Applications/usecase/threads/AddCommentOnThreadUseCase";
-import ThreadRepository from "#Domains/threads/ThreadsRepository";
+import CommentsRepository from "#Domains/comments/CommentsRepository";
 import { jest } from "@jest/globals";
 
 describe("AddCommentOnThreadUseCase", () => {
@@ -19,23 +19,23 @@ describe("AddCommentOnThreadUseCase", () => {
     };
 
     // Mock
-    const mockThreadRepository = new ThreadRepository();
-    mockThreadRepository.verifyThreadExistence = jest
+    const mockCommentsRepository = new CommentsRepository();
+    mockCommentsRepository.verifyThreadExistence = jest
       .fn()
       .mockImplementation(() => Promise.resolve());
-    mockThreadRepository.addCommentOnThread = jest
+    mockCommentsRepository.addCommentOnThread = jest
       .fn()
       .mockImplementation(() => Promise.resolve(expectedAddedCommentOnThread));
 
     const addCommentOnThread = new AddCommentOnThreadUseCase({
-      threadRepository: mockThreadRepository,
+      commentsRepository: mockCommentsRepository,
     });
 
     // Action
     const addedComment = await addCommentOnThread.execute(useCasePayload);
 
     //Assert
-    expect(mockThreadRepository.addCommentOnThread).toBeCalledWith({
+    expect(mockCommentsRepository.addCommentOnThread).toHaveBeenCalledWith({
       ownerId: useCasePayload.credentialId,
       threadId: useCasePayload.threadId,
       content: useCasePayload.commentPayload.content,

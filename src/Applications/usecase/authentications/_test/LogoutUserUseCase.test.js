@@ -11,7 +11,7 @@ describe("LogoutUserUseCase", () => {
     // Action & Assert
     await expect(
       logoutUserUseCase.execute(useCasePayload)
-    ).rejects.toThrowError(
+    ).rejects.toThrow(
       "DELETE_AUTHENTICATION_USE_CASE.NOT_CONTAIN_REFRESH_TOKEN"
     );
   });
@@ -24,7 +24,7 @@ describe("LogoutUserUseCase", () => {
     // Action & Assert
     await expect(
       logoutUserUseCase.execute(useCasePayload)
-    ).rejects.toThrowError(
+    ).rejects.toThrow(
       "DELETE_AUTHENTICATION_USE_CASE.PAYLOAD_NOT_MEET_DATA_TYPE_SPECIFICATION"
     );
   });

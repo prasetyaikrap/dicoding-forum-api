@@ -6,31 +6,10 @@ describe("ThredRepository", () => {
     const threadRepository = new ThreadRepository();
 
     // Action & Assert
-    await expect(threadRepository.addNewThread({})).rejects.toThrowError(
+    await expect(threadRepository.addNewThread({})).rejects.toThrow(
       "THREAD_REPOSITORY.METHOD_NOT_IMPLEMENTED"
     );
-    await expect(threadRepository.addCommentOnThread({})).rejects.toThrowError(
-      "THREAD_REPOSITORY.METHOD_NOT_IMPLEMENTED"
-    );
-    await expect(threadRepository.addReplyOnComment({})).rejects.toThrowError(
-      "THREAD_REPOSITORY.METHOD_NOT_IMPLEMENTED"
-    );
-    await expect(
-      threadRepository.deleteCommentOnThread({})
-    ).rejects.toThrowError("THREAD_REPOSITORY.METHOD_NOT_IMPLEMENTED");
-    await expect(
-      threadRepository.deleteReplyOnComment({})
-    ).rejects.toThrowError("THREAD_REPOSITORY.METHOD_NOT_IMPLEMENTED");
-    await expect(threadRepository.verifyCommentOwner({})).rejects.toThrowError(
-      "THREAD_REPOSITORY.METHOD_NOT_IMPLEMENTED"
-    );
-    await expect(
-      threadRepository.verifyThreadExistence({})
-    ).rejects.toThrowError("THREAD_REPOSITORY.METHOD_NOT_IMPLEMENTED");
-    await expect(
-      threadRepository.verifyCommentExistence({})
-    ).rejects.toThrowError("THREAD_REPOSITORY.METHOD_NOT_IMPLEMENTED");
-    await expect(threadRepository.getThreadById({})).rejects.toThrowError(
+    await expect(threadRepository.getThreadById({})).rejects.toThrow(
       "THREAD_REPOSITORY.METHOD_NOT_IMPLEMENTED"
     );
   });

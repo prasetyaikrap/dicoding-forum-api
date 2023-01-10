@@ -627,7 +627,7 @@ describe("HTTP server", () => {
       });
     });
     describe("when POST /threads/{threadId}/comments", () => {
-      it("It should succedd to add comment on thread and returning added comment information", async () => {
+      it("should succedd to add comment on thread and returning added comment information", async () => {
         // Arrange
         const server = await createServer(container);
         const accessToken = await ServerTestHelper.getAccessToken(server);
@@ -857,7 +857,7 @@ describe("HTTP server", () => {
       });
     });
     describe("when POST /threads/{threadId}/comments/{commentId}/replies", () => {
-      it("It should succedd to add reply on comment and returning added reply information", async () => {
+      it("should succedd to add reply on comment and returning added reply information", async () => {
         // Arrange
         const server = await createServer(container);
         const accessToken = await ServerTestHelper.getAccessToken(server);

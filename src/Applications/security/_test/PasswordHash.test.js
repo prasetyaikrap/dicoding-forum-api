@@ -6,11 +6,11 @@ describe("PasswordHash interface", () => {
     const passwordHash = new PasswordHash();
 
     // Action & Assert
-    await expect(passwordHash.hash("dummy_password")).rejects.toThrowError(
+    await expect(passwordHash.hash("dummy_password")).rejects.toThrow(
       "PASSWORD_HASH.METHOD_NOT_IMPLEMENTED"
     );
     await expect(
       passwordHash.comparePassword("plainPassword", "encryptedPassword")
-    ).rejects.toThrowError("PASSWORD_HASH.METHOD_NOT_IMPLEMENTED");
+    ).rejects.toThrow("PASSWORD_HASH.METHOD_NOT_IMPLEMENTED");
   });
 });

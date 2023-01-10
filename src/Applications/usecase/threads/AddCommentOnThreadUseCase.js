@@ -1,8 +1,8 @@
-import AddCommentOnThread from "#Domains/threads/entities/AddCommentOnThread";
+import AddCommentOnThread from "#Domains/comments/entities/AddCommentOnThread";
 
 export default class AddCommentOnThreadUseCase {
-  constructor({ threadRepository }) {
-    this._threadRepository = threadRepository;
+  constructor({ commentsRepository }) {
+    this._commentsRepository = commentsRepository;
   }
 
   async execute(useCasePayload) {
@@ -12,10 +12,10 @@ export default class AddCommentOnThreadUseCase {
     const { content } = new AddCommentOnThread(commentPayload);
 
     // verify thread existence
-    await this._threadRepository.verifyThreadExistence({ threadId });
+    await this._commentsRepository.verifyThreadExistence({ threadId });
 
     // add comment to database
-    return this._threadRepository.addCommentOnThread({
+    return await this._commentsRepository.addCommentOnThread({
       ownerId: credentialId,
       threadId,
       content,

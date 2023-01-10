@@ -6,17 +6,17 @@ describe("PasswordHash interface", () => {
     const authTokenManager = new AuthTokenManager();
 
     // Action & Assert
-    await expect(authTokenManager.createAccessToken({})).rejects.toThrowError(
+    await expect(authTokenManager.createAccessToken({})).rejects.toThrow(
       "AUTH_TOKEN_MANAGER.METHOD_NOT_IMPLEMENTED"
     );
-    await expect(authTokenManager.createRefreshToken({})).rejects.toThrowError(
+    await expect(authTokenManager.createRefreshToken({})).rejects.toThrow(
       "AUTH_TOKEN_MANAGER.METHOD_NOT_IMPLEMENTED"
     );
     await expect(
       authTokenManager.verifyRefreshToken("accessToken")
-    ).rejects.toThrowError("AUTH_TOKEN_MANAGER.METHOD_NOT_IMPLEMENTED");
+    ).rejects.toThrow("AUTH_TOKEN_MANAGER.METHOD_NOT_IMPLEMENTED");
     await expect(
       authTokenManager.decodePayload("accessToken")
-    ).rejects.toThrowError("AUTH_TOKEN_MANAGER.METHOD_NOT_IMPLEMENTED");
+    ).rejects.toThrow("AUTH_TOKEN_MANAGER.METHOD_NOT_IMPLEMENTED");
   });
 });

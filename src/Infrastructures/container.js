@@ -11,9 +11,11 @@ import Jwt from "@hapi/jwt";
 import UserRepository from "#Domains/users/UserRepository";
 import AuthenticationRepository from "#Domains/authentications/AuthenticationsRepository";
 import ThreadRepository from "#Domains/threads/ThreadsRepository";
+import CommentsRepository from "#Domains/comments/CommentsRepository";
 import UserRepositoryPostgres from "#Infrastructures/repository/UserRepositoryPostgres";
 import AuthRepositoryPostgres from "#Infrastructures/repository/AuthRepositoryPostgres";
 import ThreadRepositoryPostgres from "#Infrastructures/repository/ThreadRepositoryPostgres";
+import CommentsRepositoryPostgress from "#Infrastructures/repository/CommentsRepositoryPostgres";
 import BcryptPasswordHash from "#Infrastructures/security/BcryptPasswordHash";
 import JwtTokenManager from "#Infrastructures/security/JwtTokenManager";
 
@@ -53,6 +55,20 @@ container.register([
   {
     key: ThreadRepository.name,
     Class: ThreadRepositoryPostgres,
+    parameter: {
+      dependencies: [
+        {
+          concrete: pool,
+        },
+        {
+          concrete: nanoid,
+        },
+      ],
+    },
+  },
+  {
+    key: CommentsRepository.name,
+    Class: CommentsRepositoryPostgress,
     parameter: {
       dependencies: [
         {
@@ -193,8 +209,8 @@ container.register([
       injectType: "destructuring",
       dependencies: [
         {
-          name: "threadRepository",
-          internal: ThreadRepository.name,
+          name: "commentsRepository",
+          internal: CommentsRepository.name,
         },
       ],
     },
@@ -206,8 +222,8 @@ container.register([
       injectType: "destructuring",
       dependencies: [
         {
-          name: "threadRepository",
-          internal: ThreadRepository.name,
+          name: "commentsRepository",
+          internal: CommentsRepository.name,
         },
       ],
     },
@@ -219,8 +235,8 @@ container.register([
       injectType: "destructuring",
       dependencies: [
         {
-          name: "threadRepository",
-          internal: ThreadRepository.name,
+          name: "commentsRepository",
+          internal: CommentsRepository.name,
         },
       ],
     },
@@ -232,8 +248,8 @@ container.register([
       injectType: "destructuring",
       dependencies: [
         {
-          name: "threadRepository",
-          internal: ThreadRepository.name,
+          name: "commentsRepository",
+          internal: CommentsRepository.name,
         },
       ],
     },

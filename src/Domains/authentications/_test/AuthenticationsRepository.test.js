@@ -1,18 +1,18 @@
 import AuthenticationRepository from "#Domains/authentications/AuthenticationsRepository";
 
 describe("AuthenticationRepository Interface", () => {
-  it("should throw error when invoke abstract behavior", () => {
+  it("should throw error when invoke abstract behavior", async () => {
     // Arrange
     const authRepo = new AuthenticationRepository();
 
     // Action and Assert
-    expect(authRepo.addToken("")).rejects.toThrowError(
+    await expect(authRepo.addToken("")).rejects.toThrow(
       "AUTHENTICATION_REPOSITORY.METHOD_NOT_IMPLEMENTED"
     );
-    expect(authRepo.checkAvailabilityToken("")).rejects.toThrowError(
+    await expect(authRepo.checkAvailabilityToken("")).rejects.toThrow(
       "AUTHENTICATION_REPOSITORY.METHOD_NOT_IMPLEMENTED"
     );
-    expect(authRepo.deleteToken("")).rejects.toThrowError(
+    await expect(authRepo.deleteToken("")).rejects.toThrow(
       "AUTHENTICATION_REPOSITORY.METHOD_NOT_IMPLEMENTED"
     );
   });

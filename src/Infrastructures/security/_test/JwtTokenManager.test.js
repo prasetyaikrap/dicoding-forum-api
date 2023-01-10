@@ -19,7 +19,7 @@ describe("JwtTokenManager", () => {
       const accessToken = await jwtTokenManager.createAccessToken(payload);
 
       // Assert
-      expect(mockJwtToken.generate).toBeCalledWith(
+      expect(mockJwtToken.generate).toHaveBeenCalledWith(
         payload,
         process.env.ACCESS_TOKEN_KEY
       );
@@ -42,7 +42,7 @@ describe("JwtTokenManager", () => {
       const refreshToken = await jwtTokenManager.createRefreshToken(payload);
 
       // Assert
-      expect(mockJwtToken.generate).toBeCalledWith(
+      expect(mockJwtToken.generate).toHaveBeenCalledWith(
         payload,
         process.env.REFRESH_TOKEN_KEY
       );

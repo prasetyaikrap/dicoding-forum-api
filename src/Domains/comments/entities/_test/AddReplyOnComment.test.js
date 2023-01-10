@@ -1,4 +1,4 @@
-import AddReplyOnComment from "#Domains/threads/entities/AddReplyOnComment";
+import AddReplyOnComment from "#Domains/comments/entities/AddReplyOnComment";
 
 describe("AddReplyOnComment Entities", () => {
   it("Should throw error when not contain needed property", () => {
@@ -6,7 +6,7 @@ describe("AddReplyOnComment Entities", () => {
     const payload = {};
 
     // Action & Assert
-    expect(() => new AddReplyOnComment(payload)).toThrowError(
+    expect(() => new AddReplyOnComment(payload)).toThrow(
       "ADD_REPLY_ON_COMMENT.NOT_CONTAIN_NEEDED_PROPERTY"
     );
   });
@@ -16,7 +16,7 @@ describe("AddReplyOnComment Entities", () => {
     const payload = { content: 12345 };
 
     // Action & Assert
-    expect(() => new AddReplyOnComment(payload)).toThrowError(
+    expect(() => new AddReplyOnComment(payload)).toThrow(
       "ADD_REPLY_ON_COMMENT.NOT_MEET_DATA_TYPE_SPECIFICATION"
     );
   });
@@ -26,7 +26,7 @@ describe("AddReplyOnComment Entities", () => {
     const payload = { content: "" };
 
     // Action & Assert
-    expect(() => new AddReplyOnComment(payload)).toThrowError(
+    expect(() => new AddReplyOnComment(payload)).toThrow(
       "ADD_REPLY_ON_COMMENT.NOT_CONTAIN_NEEDED_PROPERTY"
     );
   });

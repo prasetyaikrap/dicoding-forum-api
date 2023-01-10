@@ -1,6 +1,6 @@
-import ThreadRepository from "#Domains/threads/ThreadsRepository";
 import AddReplyOnCommentUseCase from "#Applications/usecase/threads/AddReplyOnCommentUseCase";
 import { jest } from "@jest/globals";
+import CommentsRepository from "#Domains/comments/CommentsRepository";
 
 describe("AddCommentOnThreadUseCase", () => {
   it("Should orchestrating addCommentOnThreadUseCase correctly", async () => {
@@ -20,23 +20,23 @@ describe("AddCommentOnThreadUseCase", () => {
     };
 
     // Mock
-    const mockThreadRepository = new ThreadRepository();
-    mockThreadRepository.verifyCommentExistence = jest
+    const mockCommentRepository = new CommentsRepository();
+    mockCommentRepository.verifyCommentExistence = jest
       .fn()
       .mockImplementation(() => Promise.resolve());
-    mockThreadRepository.addReplyOnComment = jest
+    mockCommentRepository.addReplyOnComment = jest
       .fn()
       .mockImplementation(() => Promise.resolve(expectedAddedReplyOnComment));
 
     const addReplyOnCommentUseCase = new AddReplyOnCommentUseCase({
-      threadRepository: mockThreadRepository,
+      commentsRepository: mockCommentRepository,
     });
 
     // Action
     const addedReply = await addReplyOnCommentUseCase.execute(useCasePayload);
 
     //Assert
-    expect(mockThreadRepository.addReplyOnComment).toBeCalledWith({
+    expect(mockCommentRepository.addReplyOnComment).toHaveBeenCalledWith({
       ownerId: useCasePayload.credentialId,
       threadId: useCasePayload.threadId,
       replyCommentId: useCasePayload.commentId,

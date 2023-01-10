@@ -1,4 +1,4 @@
-import AddCommentOnThread from "#Domains/threads/entities/AddCommentOnThread";
+import AddCommentOnThread from "#Domains/comments/entities/AddCommentOnThread";
 
 describe("AddCommentOnThread Entities", () => {
   it("Should throw error when not contain needed property", () => {
@@ -6,7 +6,7 @@ describe("AddCommentOnThread Entities", () => {
     const payload = {};
 
     // Action & Assert
-    expect(() => new AddCommentOnThread(payload)).toThrowError(
+    expect(() => new AddCommentOnThread(payload)).toThrow(
       "ADD_COMMENT_ON_THREAD.NOT_CONTAIN_NEEDED_PROPERTY"
     );
   });
@@ -16,7 +16,7 @@ describe("AddCommentOnThread Entities", () => {
     const payload = { content: 12345 };
 
     // Action & Assert
-    expect(() => new AddCommentOnThread(payload)).toThrowError(
+    expect(() => new AddCommentOnThread(payload)).toThrow(
       "ADD_COMMENT_ON_THREAD.NOT_MEET_DATA_TYPE_SPECIFICATION"
     );
   });
@@ -26,7 +26,7 @@ describe("AddCommentOnThread Entities", () => {
     const payload = { content: "" };
 
     // Action & Assert
-    expect(() => new AddCommentOnThread(payload)).toThrowError(
+    expect(() => new AddCommentOnThread(payload)).toThrow(
       "ADD_COMMENT_ON_THREAD.NOT_CONTAIN_NEEDED_PROPERTY"
     );
   });

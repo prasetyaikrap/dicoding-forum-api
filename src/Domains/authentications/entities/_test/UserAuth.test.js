@@ -8,7 +8,7 @@ describe("User Auth Entities", () => {
     };
 
     // Action & Assert
-    expect(() => new UserAuth(payload)).toThrowError(
+    expect(() => new UserAuth(payload)).toThrow(
       "USER_AUTH.NOT_CONTAIN_NEEDED_PROPERTY"
     );
   });
@@ -21,7 +21,7 @@ describe("User Auth Entities", () => {
     };
 
     // Action & Assert
-    expect(() => new UserAuth(payload)).toThrowError(
+    expect(() => new UserAuth(payload)).toThrow(
       "USER_AUTH.NOT_MEET_DATA_TYPE_SPESIFICATION"
     );
   });

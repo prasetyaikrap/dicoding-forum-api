@@ -1,6 +1,6 @@
 export default class DeleteReplyOnCommentUseCase {
-  constructor({ threadRepository }) {
-    this._threadRepository = threadRepository;
+  constructor({ commentsRepository }) {
+    this._commentsRepository = commentsRepository;
   }
 
   async execute(useCasePayload) {
@@ -8,19 +8,19 @@ export default class DeleteReplyOnCommentUseCase {
       useCasePayload;
 
     // verify comment exictence
-    await this._threadRepository.verifyCommentExistence({
+    await this._commentsRepository.verifyCommentExistence({
       threadId,
       commentId,
     });
 
     // verify comment owner
-    await this._threadRepository.verifyCommentOwner({
+    await this._commentsRepository.verifyCommentOwner({
       commentId,
       ownerId: credentialId,
     });
 
     // Delete Comment
-    await this._threadRepository.deleteReplyOnComment({
+    await this._commentsRepository.deleteReplyOnComment({
       threadId,
       commentId,
       replyCommentId,

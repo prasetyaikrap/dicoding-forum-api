@@ -8,7 +8,7 @@ describe("AddThreads Entities", () => {
     };
 
     // Action & Assert
-    expect(() => new AddThread(payload)).toThrowError(
+    expect(() => new AddThread(payload)).toThrow(
       "ADD_THREAD.NOT_CONTAIN_NEEDED_PROPERTY"
     );
   });
@@ -21,7 +21,7 @@ describe("AddThreads Entities", () => {
     };
 
     // Action & Assert
-    expect(() => new AddThread(payload)).toThrowError(
+    expect(() => new AddThread(payload)).toThrow(
       "ADD_THREAD.NOT_MEET_DATA_TYPE_SPECIFICATION"
     );
   });

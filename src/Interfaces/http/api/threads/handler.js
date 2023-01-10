@@ -42,7 +42,7 @@ export default class ThreadsHandler {
       threadId,
       commentPayload: request.payload,
     };
-    const addedComment = await addCommentOnThreadUseCase.execute(
+    const { addedComment } = await addCommentOnThreadUseCase.execute(
       useCasePayload
     );
     const response = h.response({
@@ -67,7 +67,9 @@ export default class ThreadsHandler {
       commentId,
       replyPayload: request.payload,
     };
-    const addedReply = await addReplyOnCommentUseCase.execute(useCasePayload);
+    const { addedReply } = await addReplyOnCommentUseCase.execute(
+      useCasePayload
+    );
     const response = h.response({
       status: "success",
       data: {

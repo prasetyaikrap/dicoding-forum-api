@@ -1,11 +1,9 @@
 import DeleteCommentOnThreadUseCase from "#Applications/usecase/threads/DeleteCommentOnThreadUseCase";
-import AuthorizationError from "#Commons/exceptions/AuthorizationError";
-import NotFoundError from "#Commons/exceptions/NotFoundError";
-import ThreadRepository from "#Domains/threads/ThreadsRepository";
+import CommentsRepository from "#Domains/comments/CommentsRepository";
 import { jest } from "@jest/globals";
 
 describe("DeleteCommentOnThreadUseCase", () => {
-  it("It should orchestrating delete comment on thread correctly", async () => {
+  it("should orchestrating delete comment on thread correctly", async () => {
     // Arrange
     const useCasePayload = {
       credentialId: "user-12345",
@@ -14,28 +12,37 @@ describe("DeleteCommentOnThreadUseCase", () => {
     };
 
     //mock
-    const mockThreadRepository = new ThreadRepository();
-    mockThreadRepository.verifyCommentExistence = jest
+    const mockCommentRepository = new CommentsRepository();
+    mockCommentRepository.verifyCommentExistence = jest
       .fn()
       .mockImplementation(() => Promise.resolve());
-    mockThreadRepository.verifyCommentOwner = jest
+    mockCommentRepository.verifyCommentOwner = jest
       .fn()
       .mockImplementation(() => Promise.resolve());
-    mockThreadRepository.deleteCommentOnThread = jest
+    mockCommentRepository.deleteCommentOnThread = jest
       .fn()
       .mockImplementation(() => Promise.resolve());
 
     const deleteCommentOnThreadUseCase = new DeleteCommentOnThreadUseCase({
-      threadRepository: mockThreadRepository,
+      commentsRepository: mockCommentRepository,
     });
 
-    // Assert
+    // Action
+    await deleteCommentOnThreadUseCase.execute(useCasePayload);
 
-    await expect(
-      deleteCommentOnThreadUseCase.execute(useCasePayload)
-    ).resolves.not.toThrow(AuthorizationError);
-    await expect(
-      deleteCommentOnThreadUseCase.execute(useCasePayload)
-    ).resolves.not.toThrow(NotFoundError);
+    // Assert
+    expect(mockCommentRepository.verifyCommentExistence).toBeCalledWith({
+      threadId: "thread-12345",
+      commentId: "comment-12345",
+    });
+    expect(mockCommentRepository.verifyCommentOwner).toBeCalledWith({
+      ownerId: "user-12345",
+      commentId: "comment-12345",
+    });
+    expect(mockCommentRepository.deleteCommentOnThread).toBeCalledWith({
+      ownerId: "user-12345",
+      commentId: "comment-12345",
+      threadId: "thread-12345",
+    });
   });
 });

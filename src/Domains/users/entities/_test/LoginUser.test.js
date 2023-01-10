@@ -8,7 +8,7 @@ describe("Login User Entities", () => {
     };
 
     // Action & Assert
-    expect(() => new LoginUser(payload)).toThrowError(
+    expect(() => new LoginUser(payload)).toThrow(
       "LOGIN_USER.NOT_CONTAIN_NEEDED_PROPERTY"
     );
   });
@@ -21,7 +21,7 @@ describe("Login User Entities", () => {
     };
 
     // Action & Assert
-    expect(() => new LoginUser(payload)).toThrowError(
+    expect(() => new LoginUser(payload)).toThrow(
       "LOGIN_USER.NOT_MEET_DATA_TYPE_SPECIFICATION"
     );
   });

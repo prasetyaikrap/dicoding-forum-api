@@ -1,4 +1,5 @@
 import GetThreadDetailsUseCase from "#Applications/usecase/threads/GetThreadDetailsUseCase";
+import GetThreadDetails from "#Domains/threads/entities/GetThreadDetails";
 import ThreadRepository from "#Domains/threads/ThreadsRepository";
 import { jest } from "@jest/globals";
 
@@ -106,12 +107,11 @@ describe("GetThreadDetailsUseCase", () => {
 
     //mock
     const mockThreadRepository = new ThreadRepository();
-    mockThreadRepository.getThreadById = jest.fn().mockImplementation(() =>
-      Promise.resolve({
-        queryResult: expectedQueryResult,
-        thread: expectedThreadDetails,
-      })
-    );
+    mockThreadRepository.getThreadById = jest
+      .fn()
+      .mockImplementation(() =>
+        Promise.resolve(new GetThreadDetails(expectedQueryResult))
+      );
     const getThreadDetailsUseCase = new GetThreadDetailsUseCase({
       threadRepository: mockThreadRepository,
     });
@@ -122,6 +122,7 @@ describe("GetThreadDetailsUseCase", () => {
     );
 
     // Assert
+    expect(mockThreadRepository.getThreadById).toBeCalledWith("thread-12345");
     expect(queryResult).toHaveLength(4);
     expect(thread).toStrictEqual(expectedThreadDetails);
   });

@@ -1,8 +1,8 @@
-import AddReplyOnComment from "#Domains/threads/entities/AddReplyOnComment";
+import AddReplyOnComment from "#Domains/comments/entities/AddReplyOnComment";
 
 export default class AddReplyOnCommentUseCase {
-  constructor({ threadRepository }) {
-    this._threadRepository = threadRepository;
+  constructor({ commentsRepository }) {
+    this._commentsRepository = commentsRepository;
   }
 
   async execute(useCasePayload) {
@@ -12,13 +12,13 @@ export default class AddReplyOnCommentUseCase {
     const { content } = new AddReplyOnComment(replyPayload);
 
     // verify thread existence
-    await this._threadRepository.verifyCommentExistence({
+    await this._commentsRepository.verifyCommentExistence({
       threadId,
       commentId,
     });
 
     // add comment to database
-    return this._threadRepository.addReplyOnComment({
+    return await this._commentsRepository.addReplyOnComment({
       ownerId: credentialId,
       threadId,
       replyCommentId: commentId,
