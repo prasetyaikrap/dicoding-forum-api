@@ -42,6 +42,10 @@ describe("AddCommentOnThreadUseCase", () => {
       replyCommentId: useCasePayload.commentId,
       content: useCasePayload.replyPayload.content,
     });
+    expect(mockCommentRepository.verifyCommentExistence).toHaveBeenCalledWith({
+      threadId: "thread-12345",
+      commentId: "comment-12345",
+    });
     expect(addedReply).toStrictEqual(expectedAddedReplyOnComment);
   });
 });
