@@ -32,15 +32,15 @@ describe("DeleteCommentOnThreadUseCase", () => {
     await deleteReplyOnCommentUseCase.execute(useCasePayload);
 
     // Assert
-    expect(mockCommentsRepository.verifyCommentExistence).toBeCalledWith({
+    expect(mockCommentsRepository.verifyCommentExistence).toHaveBeenCalledWith({
       threadId: "thread-12345",
       commentId: "reply-12345",
     });
-    expect(mockCommentsRepository.verifyCommentOwner).toBeCalledWith({
+    expect(mockCommentsRepository.verifyCommentOwner).toHaveBeenCalledWith({
       ownerId: "user-12345",
       commentId: "reply-12345",
     });
-    expect(mockCommentsRepository.deleteReplyOnComment).toBeCalledWith({
+    expect(mockCommentsRepository.deleteReplyOnComment).toHaveBeenCalledWith({
       ownerId: "user-12345",
       commentId: "reply-12345",
       threadId: "thread-12345",

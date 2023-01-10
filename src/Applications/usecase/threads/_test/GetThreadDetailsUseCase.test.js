@@ -122,7 +122,7 @@ describe("GetThreadDetailsUseCase", () => {
     );
 
     // Assert
-    expect(mockThreadRepository.getThreadById).toBeCalledWith("thread-12345");
+    expect(mockThreadRepository.getThreadById).toHaveBeenCalledWith("thread-12345");
     expect(queryResult).toHaveLength(4);
     expect(thread).toStrictEqual(expectedThreadDetails);
   });
