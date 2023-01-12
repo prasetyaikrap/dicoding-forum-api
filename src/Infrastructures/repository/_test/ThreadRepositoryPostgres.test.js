@@ -85,7 +85,9 @@ describe("ThreadRepositoryPostgres", () => {
         title: "new thread title",
         body: "new thread body",
       };
-      await threadRepositoryPostgres.addNewThread(addThread);
+      const addedThread = await threadRepositoryPostgres.addNewThread(
+        addThread
+      );
 
       // add comment
       const addComment = {
@@ -94,7 +96,8 @@ describe("ThreadRepositoryPostgres", () => {
         content: "new comment on thread thread-12345 #1",
       };
 
-      await commentsRepositoryPostgres.addCommentOnThread(addComment);
+      const { addedComment } =
+        await commentsRepositoryPostgres.addCommentOnThread(addComment);
 
       // add reply
       const addReply = {
@@ -103,26 +106,40 @@ describe("ThreadRepositoryPostgres", () => {
         replyCommentId: "comment-12345",
         content: "new reply on comment comment-12345 #1",
       };
-      await commentsRepositoryPostgres.addReplyOnComment(addReply);
+      const { addedReply } = await commentsRepositoryPostgres.addReplyOnComment(
+        addReply
+      );
+
+      // Get Thread, comment, and reply date
+      const [getThread] = await ThreadsTableTestHelper.findThreadById(
+        addedThread.id
+      );
+      const [getComment] = await ThreadsTableTestHelper.findCommentById(
+        addedComment.id
+      );
+      const [getReply] = await ThreadsTableTestHelper.findCommentById(
+        addedReply.id
+      );
+
       const expectedThreadDetailsObject = {
         id: "thread-12345",
         username: "dicoding",
         title: "new thread title",
         body: "new thread body",
-        date: "2023-5-1",
+        date: getThread.created_at,
         is_deleted: false,
         comments: [
           {
             id: "comment-12345",
             username: "dicoding",
             content: "new comment on thread thread-12345 #1",
-            date: "2023-5-1",
+            date: getComment.created_at,
             replies: [
               {
                 id: "reply-12345",
                 username: "dicoding",
                 content: "new reply on comment comment-12345 #1",
-                date: "2023-5-1",
+                date: getReply.created_at,
               },
             ],
           },
@@ -132,12 +149,6 @@ describe("ThreadRepositoryPostgres", () => {
       // Action
       const { queryResult, thread } =
         await threadRepositoryPostgres.getThreadById("thread-12345");
-
-      // inject data to expectedThreadDetailsObject
-      expectedThreadDetailsObject.date = thread.date;
-      expectedThreadDetailsObject.comments[0].date = thread.comments[0].date;
-      expectedThreadDetailsObject.comments[0].replies[0].date =
-        thread.comments[0].replies[0].date;
 
       // Assert
       expect(queryResult).toHaveLength(2);
