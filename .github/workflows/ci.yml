@@ -11,12 +11,33 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+
     strategy:
       matrix:
         node-version: [16.x]
+
+    services:
+      pg_forumapi:
+        image: prasetyaip/ems-postgresql:v1
+        env:
+          - POSTGRES_USER: ${{ secrets.PGUSER }}
+          - POSTGRES_PASSWORD: ${{ secrets.PGPASSWORD }}
+          - POSTGRES_DB: ${{ secrets.PGDATABASE }}
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+
     steps:
       - name: Checkout code from repository
         uses: actions/checkout@v3
+      - name: Check docker run
+        run: |
+          docker -v
+          docker ps
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3
         with:
