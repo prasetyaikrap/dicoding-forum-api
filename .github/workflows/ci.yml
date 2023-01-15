@@ -19,6 +19,7 @@ jobs:
     services:
       pg_forumapi:
         image: prasetyaip/ems-postgresql:v1
+        container_name: "pg_forumapi"
         env:
           POSTGRES_USER: ${{ secrets.PGUSER }}
           POSTGRES_PASSWORD: ${{ secrets.PGPASSWORD }}
