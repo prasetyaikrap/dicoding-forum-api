@@ -1,9 +1,6 @@
 name: Continoues Integration (Forum API)
 
 on:
-  push:
-    branches:
-      - master
   pull_request:
     branches:
       - master
