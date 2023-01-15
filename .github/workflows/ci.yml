@@ -19,7 +19,6 @@ jobs:
     services:
       pg_forumapi:
         image: prasetyaip/ems-postgresql:v1
-        container_name: "pg_forumapi"
         env:
           POSTGRES_USER: ${{ secrets.PGUSER }}
           POSTGRES_PASSWORD: ${{ secrets.PGPASSWORD }}
@@ -31,6 +30,19 @@ jobs:
           --health-retries 5
         ports:
           - 5432:5432
+      pg_forumapi_test:
+        image: prasetyaip/ems-postgresql:v1
+        env:
+          POSTGRES_USER: ${{ secrets.PGUSER }}
+          POSTGRES_PASSWORD: ${{ secrets.PGPASSWORD }}
+          POSTGRES_DB: ${{ secrets.PGDATABASE }}
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5433:5432
 
     steps:
       - name: Checkout code from repository
@@ -46,8 +58,8 @@ jobs:
       - name: npm install migrate and test
         run: |
           npm install
-          # npm run migrate up
-          # npm run test
+          npm run migrate up
+          npm run test
         env:
           CI: true
           PGHOST_TEST: ${{ secrets.PGHOST_TEST }}
@@ -62,4 +74,4 @@ jobs:
           PGPORT: ${{ secrets.PGPORT }}
           ACCESS_TOKEN_KEY: ${{ secrets.ACCESS_TOKEN_KEY }}
           REFRESH_TOKEN_KEY: ${{ secrets.REFRESH_TOKEN_KEY }}
-          ACCESS_TOKEN_AGE: 3600
+          ACCESS_TOKEN_AGE: ${{ secrets.ACCESS_TOKEN_AGE }}
