@@ -12,8 +12,6 @@ jobs:
     services:
       pg_forumapi:
         image: prasetyaip/ems-postgresql:v1
-        container_name: "pg_forumapi"
-        restart: always
         ports: ${{ secrets.PGPORT }}:5432
         env:
           POSTGRES_USER: ${{ secrets.PGUSER }}
@@ -26,8 +24,6 @@ jobs:
           --health-retries 5
       pg_forumapi_test:
         image: prasetyaip/ems-postgresql:v1
-        container_name: "pg_forumapi_test"
-        restart: always
         ports: ${{ secrets.PGPORT_TEST }}:5432
         env:
           POSTGRES_USER: ${{ secrets.PGUSER_TEST  }}
