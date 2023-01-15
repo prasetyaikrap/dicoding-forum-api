@@ -20,9 +20,9 @@ jobs:
       pg_forumapi:
         image: prasetyaip/ems-postgresql:v1
         env:
-          - POSTGRES_USER: ${{ secrets.PGUSER }}
-          - POSTGRES_PASSWORD: ${{ secrets.PGPASSWORD }}
-          - POSTGRES_DB: ${{ secrets.PGDATABASE }}
+          POSTGRES_USER: ${{ secrets.PGUSER }}
+          POSTGRES_PASSWORD: ${{ secrets.PGPASSWORD }}
+          POSTGRES_DB: ${{ secrets.PGDATABASE }}
         options: >-
           --health-cmd pg_isready
           --health-interval 10s
