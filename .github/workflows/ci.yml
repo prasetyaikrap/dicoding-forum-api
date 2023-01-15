@@ -33,9 +33,9 @@ jobs:
       pg_forumapi_test:
         image: prasetyaip/ems-postgresql:v1
         env:
-          POSTGRES_USER: ${{ secrets.PGUSER }}
-          POSTGRES_PASSWORD: ${{ secrets.PGPASSWORD }}
-          POSTGRES_DB: ${{ secrets.PGDATABASE }}
+          POSTGRES_USER: ${{ secrets.PGUSER_TEST }}
+          POSTGRES_PASSWORD: ${{ secrets.PGPASSWORD_TEST }}
+          POSTGRES_DB: ${{ secrets.PGDATABASE_TEST }}
         options: >-
           --health-cmd pg_isready
           --health-interval 10s
