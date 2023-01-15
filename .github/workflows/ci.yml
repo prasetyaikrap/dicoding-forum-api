@@ -5,47 +5,11 @@ on:
     branches:
       - master
 
-jobs:
-  container-job:
-    runs-on: ubuntu-latest
-    container: node:10.18-jessie
-    services:
-      pg_forumapi:
-        image: prasetyaip/ems-postgresql:v1
-        ports: ${{ secrets.PGPORT }}:5432
-        env:
-          POSTGRES_USER: ${{ secrets.PGUSER }}
-          POSTGRES_PASSWORD: ${{ secrets.PGPASSWORD }}
-          POSTGRES_DB: ${{ secrets.PGDATABASE }}
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-      pg_forumapi_test:
-        image: prasetyaip/ems-postgresql:v1
-        ports: ${{ secrets.PGPORT_TEST }}:5432
-        env:
-          POSTGRES_USER: ${{ secrets.PGUSER_TEST  }}
-          POSTGRES_PASSWORD: ${{ secrets.PGPASSWORD_TEST }}
-          POSTGRES_DB: ${{ secrets.PGDATABASE_TEST }}
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-
-    steps:
-      - name: Check Docker is running
-        run: |
-          docker -v
-          docker ps
   test:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [14.x]
-    needs: container-job
+        node-version: [16.x]
     steps:
       - name: Checkout code from repository
         uses: actions/checkout@v2
