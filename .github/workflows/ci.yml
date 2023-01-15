@@ -17,19 +17,6 @@ jobs:
         node-version: [16.x]
 
     services:
-      pg_forumapi:
-        image: prasetyaip/ems-postgresql:v1
-        env:
-          POSTGRES_USER: ${{ secrets.PGUSER }}
-          POSTGRES_PASSWORD: ${{ secrets.PGPASSWORD }}
-          POSTGRES_DB: ${{ secrets.PGDATABASE }}
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-        ports:
-          - 5432:5432
       pg_forumapi_test:
         image: prasetyaip/ems-postgresql:v1
         env:
@@ -58,7 +45,7 @@ jobs:
       - name: npm install migrate and test
         run: |
           npm install
-          npm run migrate up
+          npm run migrate:test up
           npm run test
         env:
           CI: true
