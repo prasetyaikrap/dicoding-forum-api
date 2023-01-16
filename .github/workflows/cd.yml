@@ -74,7 +74,7 @@ jobs:
           port: ${{ secrets.SSH_PORT }}
           script: |
             cd ~/app
-            git pull origin master
+            git pull https://${{ secrets.GH_USERNAME }}:${{ secrets.GH_PASSWORD }}@github.com/prasetyaikrap/dicoding-forum-api.git
             npm install
             npm run migrate up
             pm2 restart forumapi-prasetya
