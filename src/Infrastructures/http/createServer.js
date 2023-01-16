@@ -5,6 +5,7 @@ import Jwt from "@hapi/jwt";
 import users from "#Interfaces/http/api/users/index";
 import authentications from "#Interfaces/http/api/authentications/index";
 import threads from "#Interfaces/http/api/threads/index";
+import home from "#Interfaces/http/api/home/index";
 
 import DomainErrorTranslator from "#Commons/exceptions/DomainErrorTranslator";
 import ClientError from "#Commons/exceptions/ClientError";
@@ -56,6 +57,9 @@ const createServer = async (container) => {
     {
       plugin: threads,
       options: { container },
+    },
+    {
+      plugin: home,
     },
   ]);
 
