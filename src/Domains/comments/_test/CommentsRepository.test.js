@@ -7,25 +7,43 @@ describe("ThredRepository", () => {
 
     // Action & Assert
     await expect(commentsRepository.addCommentOnThread({})).rejects.toThrow(
-      "THREAD_REPOSITORY.METHOD_NOT_IMPLEMENTED"
+      "COMMENT_REPOSITORY.METHOD_NOT_IMPLEMENTED"
     );
     await expect(commentsRepository.addReplyOnComment({})).rejects.toThrow(
-      "THREAD_REPOSITORY.METHOD_NOT_IMPLEMENTED"
+      "COMMENT_REPOSITORY.METHOD_NOT_IMPLEMENTED"
     );
     await expect(commentsRepository.deleteCommentOnThread({})).rejects.toThrow(
-      "THREAD_REPOSITORY.METHOD_NOT_IMPLEMENTED"
+      "COMMENT_REPOSITORY.METHOD_NOT_IMPLEMENTED"
     );
     await expect(commentsRepository.deleteReplyOnComment({})).rejects.toThrow(
-      "THREAD_REPOSITORY.METHOD_NOT_IMPLEMENTED"
+      "COMMENT_REPOSITORY.METHOD_NOT_IMPLEMENTED"
     );
     await expect(commentsRepository.verifyCommentOwner({})).rejects.toThrow(
-      "THREAD_REPOSITORY.METHOD_NOT_IMPLEMENTED"
+      "COMMENT_REPOSITORY.METHOD_NOT_IMPLEMENTED"
     );
     await expect(commentsRepository.verifyThreadExistence({})).rejects.toThrow(
-      "THREAD_REPOSITORY.METHOD_NOT_IMPLEMENTED"
+      "COMMENT_REPOSITORY.METHOD_NOT_IMPLEMENTED"
     );
     await expect(commentsRepository.verifyCommentExistence({})).rejects.toThrow(
-      "THREAD_REPOSITORY.METHOD_NOT_IMPLEMENTED"
+      "COMMENT_REPOSITORY.METHOD_NOT_IMPLEMENTED"
     );
+    await expect(commentsRepository.updateCommentLikes({})).rejects.toThrow(
+      "COMMENT_REPOSITORY.METHOD_NOT_IMPLEMENTED"
+    );
+    await expect(
+      commentsRepository._verifyUserCommentLikes({})
+    ).rejects.toThrow("COMMENT_REPOSITORY.METHOD_NOT_IMPLEMENTED");
+    await expect(commentsRepository._incrementCommentLikes({})).rejects.toThrow(
+      "COMMENT_REPOSITORY.METHOD_NOT_IMPLEMENTED"
+    );
+    await expect(commentsRepository._decrementCommentLikes({})).rejects.toThrow(
+      "COMMENT_REPOSITORY.METHOD_NOT_IMPLEMENTED"
+    );
+    await expect(commentsRepository._addUserCommentLikes({})).rejects.toThrow(
+      "COMMENT_REPOSITORY.METHOD_NOT_IMPLEMENTED"
+    );
+    await expect(
+      commentsRepository._deleteUserCommentLikes({})
+    ).rejects.toThrow("COMMENT_REPOSITORY.METHOD_NOT_IMPLEMENTED");
   });
 });

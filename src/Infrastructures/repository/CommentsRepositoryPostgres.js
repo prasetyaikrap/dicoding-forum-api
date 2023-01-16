@@ -102,4 +102,81 @@ export default class CommentsRepositoryPostgress extends CommentsRepository {
       throw new NotFoundError("Comment is not exist");
     }
   }
+
+  async updateCommentLikes({ threadId, commentId, userId }) {
+    const rowCount = await this._verifyUserCommentLikes({
+      threadId,
+      commentId,
+      userId,
+    });
+
+    if (rowCount) {
+      await this._deleteUserCommentLikes({ threadId, commentId, userId });
+      await this._decrementCommentLikes({ threadId, commentId });
+    }
+
+    if (!rowCount) {
+      await this._addUserCommentLikes({ threadId, commentId, userId });
+      await this._incrementCommentLikes({ threadId, commentId });
+    }
+  }
+
+  async _verifyUserCommentLikes({ threadId, commentId, userId }) {
+    const query = {
+      text: `SELECT id FROM user_comment_likes 
+            WHERE comment_id = $1
+            AND thread_id = $2
+            AND user_id = $3`,
+      values: [commentId, threadId, userId],
+    };
+    const result = await this._pool.query(query);
+    return result.rowCount;
+  }
+
+  async _incrementCommentLikes({ threadId, commentId }) {
+    const query = {
+      text: `UPDATE thread_comments SET likes = likes + 1
+            WHERE id = $1
+            AND thread_id = $2`,
+      values: [commentId, threadId],
+    };
+    const result = await this._pool.query(query);
+    if (!result.rowCount) {
+      throw new NotFoundError("Comment Not Found");
+    }
+  }
+
+  async _decrementCommentLikes({ threadId, commentId }) {
+    const query = {
+      text: `UPDATE thread_comments SET likes = likes - 1
+            WHERE id = $1
+            AND thread_id = $2`,
+      values: [commentId, threadId],
+    };
+    const result = await this._pool.query(query);
+    if (!result.rowCount) {
+      throw new NotFoundError("Comment Not Found");
+    }
+  }
+
+  async _addUserCommentLikes({ threadId, commentId, userId }) {
+    const query = {
+      text: `INSERT INTO user_comment_likes(thread_id, comment_id, user_id)
+            VALUES($1, $2, $3) 
+            RETURNING id`,
+      values: [threadId, commentId, userId],
+    };
+    await this._pool.query(query);
+  }
+
+  async _deleteUserCommentLikes({ threadId, commentId, userId }) {
+    const query = {
+      text: `DELETE FROM user_comment_likes
+            WHERE thread_id = $1
+            AND comment_id = $2
+            AND user_id = $3`,
+      values: [threadId, commentId, userId],
+    };
+    await this._pool.query(query);
+  }
 }
