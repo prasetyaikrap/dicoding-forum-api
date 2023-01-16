@@ -1,0 +1,7 @@
+{
+  "user": "postgrestest",
+  "password": "dicodingtest",
+  "host": "localhost",
+  "port": 5433,
+  "database": "forumapi_test"
+}
