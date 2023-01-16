@@ -1,7 +1,7 @@
-name: Continoues Integration (Forum API)
+name: Continuous Deployment
 
 on:
-  pull_request:
+  push:
     branches:
       - master
 
@@ -59,3 +59,22 @@ jobs:
           ACCESS_TOKEN_KEY: ${{ secrets.ACCESS_TOKEN_KEY }}
           REFRESH_TOKEN_KEY: ${{ secrets.REFRESH_TOKEN_KEY }}
           ACCESS_TOKEN_AGE: ${{ secrets.ACCESS_TOKEN_AGE }}
+  deploy:
+    runs-on: ubuntu-latest
+
+    needs: test
+
+    steps:
+      - name: SSH and deploy app
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          script: |
+            cd ~/app
+            git pull origin master
+            npm install
+            npm run migrate up
+            pm2 restart forumapi-prasetya
