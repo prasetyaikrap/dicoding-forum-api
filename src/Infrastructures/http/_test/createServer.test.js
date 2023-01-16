@@ -30,6 +30,27 @@ describe("HTTP server", () => {
     expect(response.statusCode).toEqual(404);
   });
 
+  describe("/ endpoint", () => {
+    describe("when GET /", () => {
+      it("should recevie home route message successfully", async () => {
+        const server = await createServer(container);
+
+        // Action
+        const response = await server.inject({
+          method: "GET",
+          url: "/",
+        });
+
+        const { status, message } = JSON.parse(response.payload);
+
+        // Assert
+        expect(response.statusCode).toEqual(200);
+        expect(status).toEqual("success");
+        expect(message).toEqual("Forum API dicoding is running successfully");
+      });
+    });
+  });
+
   describe("/users endpoint", () => {
     describe("when POST /users", () => {
       it("should response 201 and persisted user", async () => {
