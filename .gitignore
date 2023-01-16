@@ -131,3 +131,6 @@ dist
 
 #Dockerfile
 docker-compose.yml
+
+# config folder
+config/
