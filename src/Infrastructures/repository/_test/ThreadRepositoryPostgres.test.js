@@ -134,12 +134,14 @@ describe("ThreadRepositoryPostgres", () => {
             username: "dicoding",
             content: "new comment on thread thread-12345 #1",
             date: getComment.created_at,
+            likeCount: 0,
             replies: [
               {
                 id: "reply-12345",
                 username: "dicoding",
                 content: "new reply on comment comment-12345 #1",
                 date: getReply.created_at,
+                likeCount: 0,
               },
             ],
           },

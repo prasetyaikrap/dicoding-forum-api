@@ -33,6 +33,7 @@ export default class GetThreadDetails {
             ? "**komentar telah dihapus**"
             : comment.tc_content,
           date: comment.tc_date,
+          likeCount: comment.tc_likes,
           replies: [...replies],
         };
       });
@@ -53,6 +54,7 @@ export default class GetThreadDetails {
             ? "**balasan telah dihapus**"
             : reply.tc_content,
           date: reply.tc_date,
+          likeCount: reply.tc_likes,
         };
       });
     return replies;

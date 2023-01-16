@@ -22,6 +22,7 @@ describe("GetThreadDetailsUseCase", () => {
         tc_date: "2023-5-1",
         tc_is_deleted: false,
         tc_reply_comment_id: null,
+        tc_likes: 0,
         utc_username: "dicoding",
       },
       {
@@ -36,6 +37,7 @@ describe("GetThreadDetailsUseCase", () => {
         tc_date: "2023-6-1",
         tc_is_deleted: true,
         tc_reply_comment_id: null,
+        tc_likes: 0,
         utc_username: "decoders",
       },
       {
@@ -50,6 +52,7 @@ describe("GetThreadDetailsUseCase", () => {
         tc_date: "2023-5-1",
         tc_is_deleted: false,
         tc_reply_comment_id: "comment-12345",
+        tc_likes: 0,
         utc_username: "decoders",
       },
       {
@@ -64,6 +67,7 @@ describe("GetThreadDetailsUseCase", () => {
         tc_date: "2023-6-1",
         tc_is_deleted: true,
         tc_reply_comment_id: "comment-12345",
+        tc_likes: 0,
         utc_username: "indodicoding",
       },
     ];
@@ -80,18 +84,21 @@ describe("GetThreadDetailsUseCase", () => {
           username: "dicoding",
           content: "new comment on thread #1",
           date: "2023-5-1",
+          likeCount: 0,
           replies: [
             {
               id: "reply-12345",
               username: "decoders",
               content: "new reply on comment comment-12345 #1",
               date: "2023-5-1",
+              likeCount: 0,
             },
             {
               id: "reply-56789",
               username: "indodicoding",
               content: "**balasan telah dihapus**",
               date: "2023-6-1",
+              likeCount: 0,
             },
           ],
         },
@@ -100,6 +107,7 @@ describe("GetThreadDetailsUseCase", () => {
           username: "decoders",
           content: "**komentar telah dihapus**",
           date: "2023-6-1",
+          likeCount: 0,
           replies: [],
         },
       ],
@@ -122,7 +130,9 @@ describe("GetThreadDetailsUseCase", () => {
     );
 
     // Assert
-    expect(mockThreadRepository.getThreadById).toHaveBeenCalledWith("thread-12345");
+    expect(mockThreadRepository.getThreadById).toHaveBeenCalledWith(
+      "thread-12345"
+    );
     expect(queryResult).toHaveLength(4);
     expect(thread).toStrictEqual(expectedThreadDetails);
   });

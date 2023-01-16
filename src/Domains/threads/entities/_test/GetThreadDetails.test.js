@@ -16,6 +16,7 @@ describe("GetThreadDetails response entities", () => {
         tc_date: "2023-5-1",
         tc_is_deleted: false,
         tc_reply_comment_id: null,
+        tc_likes: 0,
         utc_username: "dicoding",
       },
       {
@@ -30,6 +31,7 @@ describe("GetThreadDetails response entities", () => {
         tc_date: "2023-6-1",
         tc_is_deleted: false,
         tc_reply_comment_id: null,
+        tc_likes: 0,
         utc_username: "decoders",
       },
       {
@@ -44,6 +46,7 @@ describe("GetThreadDetails response entities", () => {
         tc_date: "2023-5-1",
         tc_is_deleted: false,
         tc_reply_comment_id: "comment-12345",
+        tc_likes: 0,
         utc_username: "decoders",
       },
     ];
@@ -60,12 +63,14 @@ describe("GetThreadDetails response entities", () => {
           username: "dicoding",
           content: "new comment on thread #1",
           date: "2023-5-1",
+          likeCount: 0,
           replies: [
             {
               id: "reply-12345",
               username: "decoders",
               content: "new reply on comment comment-12345",
               date: "2023-5-1",
+              likeCount: 0,
             },
           ],
         },
@@ -74,6 +79,7 @@ describe("GetThreadDetails response entities", () => {
           username: "decoders",
           content: "new comment on thread #2",
           date: "2023-6-1",
+          likeCount: 0,
           replies: [],
         },
       ],
@@ -102,6 +108,7 @@ describe("GetThreadDetails response entities", () => {
         tc_date: "2023-5-1",
         tc_is_deleted: false,
         tc_reply_comment_id: null,
+        tc_likes: 0,
         utc_username: "dicoding",
       },
       {
@@ -116,6 +123,7 @@ describe("GetThreadDetails response entities", () => {
         tc_date: "2023-6-1",
         tc_is_deleted: true,
         tc_reply_comment_id: null,
+        tc_likes: 0,
         utc_username: "decoders",
       },
       {
@@ -130,6 +138,7 @@ describe("GetThreadDetails response entities", () => {
         tc_date: "2023-5-1",
         tc_is_deleted: false,
         tc_reply_comment_id: "comment-12345",
+        tc_likes: 0,
         utc_username: "decoders",
       },
       {
@@ -144,6 +153,7 @@ describe("GetThreadDetails response entities", () => {
         tc_date: "2023-6-1",
         tc_is_deleted: true,
         tc_reply_comment_id: "comment-12345",
+        tc_likes: 0,
         utc_username: "indodicoding",
       },
     ];
@@ -160,18 +170,21 @@ describe("GetThreadDetails response entities", () => {
           username: "dicoding",
           content: "new comment on thread #1",
           date: "2023-5-1",
+          likeCount: 0,
           replies: [
             {
               id: "reply-12345",
               username: "decoders",
               content: "new reply on comment comment-12345 #1",
               date: "2023-5-1",
+              likeCount: 0,
             },
             {
               id: "reply-56789",
               username: "indodicoding",
               content: "**balasan telah dihapus**",
               date: "2023-6-1",
+              likeCount: 0,
             },
           ],
         },
@@ -180,6 +193,7 @@ describe("GetThreadDetails response entities", () => {
           username: "decoders",
           content: "**komentar telah dihapus**",
           date: "2023-6-1",
+          likeCount: 0,
           replies: [],
         },
       ],

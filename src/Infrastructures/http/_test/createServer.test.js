@@ -1271,7 +1271,7 @@ describe("HTTP server", () => {
         expect(commentsAfterDelete).toHaveLength(1);
         expect(commentsAfterDelete[0].is_deleted).toEqual(true);
       });
-      it("should throw not fond error when comment is not exist", async () => {
+      it("should throw not found error when comment is not exist", async () => {
         // Arrange
         const server = await createServer(container);
         const accessToken = await ServerTestHelper.getAccessToken(server);
@@ -1780,12 +1780,14 @@ describe("HTTP server", () => {
               username: "dicoding",
               content: getComment.content,
               date: getComment.created_at.toISOString(),
+              likeCount: getComment.likes,
               replies: [
                 {
                   id: getReply.id,
                   username: "dicoding",
                   content: getReply.content,
                   date: getReply.created_at.toISOString(),
+                  likeCount: getReply.likes,
                 },
               ],
             },
@@ -1896,12 +1898,14 @@ describe("HTTP server", () => {
               username: "dicoding",
               content: getComment.content,
               date: getComment.created_at.toISOString(),
+              likeCount: getComment.likes,
               replies: [
                 {
                   id: getReply.id,
                   username: "dicoding",
                   content: getReply.content,
                   date: getReply.created_at.toISOString(),
+                  likeCount: getReply.likes,
                 },
               ],
             },
@@ -2089,6 +2093,316 @@ describe("HTTP server", () => {
         expect(threadDetailsResponseMessage).toEqual(
           "Failed to get thread details. Thread not found"
         );
+      });
+    });
+    describe("when UPDATE /threads/{threadId}/comments/{commentId}/likes", () => {
+      it("should increase likes on comment successfully", async () => {
+        // Arrange
+        const server = await createServer(container);
+        const accessToken = await ServerTestHelper.getAccessToken(server);
+
+        // add thread
+        const addThreadPayload = {
+          title: "New thread title",
+          body: "New thread body",
+        };
+        const addedThreadResponse = await server.inject({
+          method: "POST",
+          url: "/threads",
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+          payload: addThreadPayload,
+        });
+        const {
+          status: addedThreadResponseStatus,
+          data: { addedThread },
+        } = JSON.parse(addedThreadResponse.payload);
+
+        // add comment
+        const addCommentPayload = {
+          content: `New comment on thread ${addedThread.id}`,
+        };
+        const addedCommentResponse = await server.inject({
+          method: "POST",
+          url: `/threads/${addedThread.id}/comments`,
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+          payload: addCommentPayload,
+        });
+        const {
+          status: addedCommentResponseStatus,
+          data: { addedComment },
+        } = JSON.parse(addedCommentResponse.payload);
+        const commentBeforeAddLikes =
+          await ThreadsTableTestHelper.findCommentById(addedComment.id);
+
+        // Action
+        const addCommentLikesResponse = await server.inject({
+          method: "PUT",
+          url: `/threads/${addedThread.id}/comments/${addedComment.id}/likes`,
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        });
+        const { status: addCommentLikesResponseStatus } = JSON.parse(
+          addCommentLikesResponse.payload
+        );
+        const commentAfterAddLikes =
+          await ThreadsTableTestHelper.findCommentById(addedComment.id);
+
+        // Assert
+        expect(addedThreadResponse.statusCode).toEqual(201);
+        expect(addedThreadResponseStatus).toEqual("success");
+        expect(addedCommentResponse.statusCode).toEqual(201);
+        expect(addedCommentResponseStatus).toEqual("success");
+        expect(addedComment).toBeInstanceOf(Object);
+        expect(addedComment.id).toBeDefined();
+        expect(addedComment.content).toBeDefined();
+        expect(addedComment.content).toEqual(addCommentPayload.content);
+        expect(addedComment.owner).toBeDefined();
+        expect(addCommentLikesResponse.statusCode).toEqual(200);
+        expect(addCommentLikesResponseStatus).toEqual("success");
+        expect(commentBeforeAddLikes).toHaveLength(1);
+        expect(commentBeforeAddLikes[0].likes).toEqual(0);
+        expect(commentAfterAddLikes).toHaveLength(1);
+        expect(commentAfterAddLikes[0].likes).toEqual(1);
+      });
+      it("should decrease likes on comment successfully", async () => {
+        // Arrange
+        const server = await createServer(container);
+        const accessToken = await ServerTestHelper.getAccessToken(server);
+
+        // add thread
+        const addThreadPayload = {
+          title: "New thread title",
+          body: "New thread body",
+        };
+        const addedThreadResponse = await server.inject({
+          method: "POST",
+          url: "/threads",
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+          payload: addThreadPayload,
+        });
+        const {
+          status: addedThreadResponseStatus,
+          data: { addedThread },
+        } = JSON.parse(addedThreadResponse.payload);
+
+        // add comment
+        const addCommentPayload = {
+          content: `New comment on thread ${addedThread.id}`,
+        };
+        const addedCommentResponse = await server.inject({
+          method: "POST",
+          url: `/threads/${addedThread.id}/comments`,
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+          payload: addCommentPayload,
+        });
+        const {
+          status: addedCommentResponseStatus,
+          data: { addedComment },
+        } = JSON.parse(addedCommentResponse.payload);
+        const commentBeforeAddLikes =
+          await ThreadsTableTestHelper.findCommentById(addedComment.id);
+
+        // Action
+        // add likes
+        const addCommentLikesResponse = await server.inject({
+          method: "PUT",
+          url: `/threads/${addedThread.id}/comments/${addedComment.id}/likes`,
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        });
+        const { status: addCommentLikesResponseStatus } = JSON.parse(
+          addCommentLikesResponse.payload
+        );
+        const commentAfterAddLikes =
+          await ThreadsTableTestHelper.findCommentById(addedComment.id);
+
+        // delete likes
+        const deleteCommentLikesResponse = await server.inject({
+          method: "PUT",
+          url: `/threads/${addedThread.id}/comments/${addedComment.id}/likes`,
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        });
+        const { status: deleteCommentLikesResponseStatus } = JSON.parse(
+          deleteCommentLikesResponse.payload
+        );
+        const commentAfterDeleteLikes =
+          await ThreadsTableTestHelper.findCommentById(addedComment.id);
+
+        // Assert
+        expect(addedThreadResponse.statusCode).toEqual(201);
+        expect(addedThreadResponseStatus).toEqual("success");
+        expect(addedCommentResponse.statusCode).toEqual(201);
+        expect(addedCommentResponseStatus).toEqual("success");
+        expect(addedComment).toBeInstanceOf(Object);
+        expect(addedComment.id).toBeDefined();
+        expect(addedComment.content).toBeDefined();
+        expect(addedComment.content).toEqual(addCommentPayload.content);
+        expect(addedComment.owner).toBeDefined();
+        expect(addCommentLikesResponse.statusCode).toEqual(200);
+        expect(addCommentLikesResponseStatus).toEqual("success");
+        expect(commentBeforeAddLikes).toHaveLength(1);
+        expect(commentBeforeAddLikes[0].likes).toEqual(0);
+        expect(commentAfterAddLikes).toHaveLength(1);
+        expect(commentAfterAddLikes[0].likes).toEqual(1);
+        expect(commentAfterDeleteLikes).toHaveLength(1);
+        expect(commentAfterDeleteLikes[0].likes).toEqual(0);
+      });
+      it("should throw missing authentication when not contain auth permission", async () => {
+        // Arrange
+        const server = await createServer(container);
+        const accessToken = await ServerTestHelper.getAccessToken(server);
+
+        // add thread
+        const addThreadPayload = {
+          title: "New thread title",
+          body: "New thread body",
+        };
+        const addedThreadResponse = await server.inject({
+          method: "POST",
+          url: "/threads",
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+          payload: addThreadPayload,
+        });
+        const {
+          status: addedThreadResponseStatus,
+          data: { addedThread },
+        } = JSON.parse(addedThreadResponse.payload);
+
+        // add comment
+        const addCommentPayload = {
+          content: `New comment on thread ${addedThread.id}`,
+        };
+        const addedCommentResponse = await server.inject({
+          method: "POST",
+          url: `/threads/${addedThread.id}/comments`,
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+          payload: addCommentPayload,
+        });
+        const {
+          status: addedCommentResponseStatus,
+          data: { addedComment },
+        } = JSON.parse(addedCommentResponse.payload);
+        const commentBeforeAddLikes =
+          await ThreadsTableTestHelper.findCommentById(addedComment.id);
+
+        // Action
+        const addCommentLikesResponse = await server.inject({
+          method: "PUT",
+          url: `/threads/${addedThread.id}/comments/${addedComment.id}/likes`,
+        });
+        const { message: addCommentLikesMessage } = JSON.parse(
+          addCommentLikesResponse.payload
+        );
+        const commentAfterAddLikes =
+          await ThreadsTableTestHelper.findCommentById(addedComment.id);
+
+        // Assert
+        expect(addedThreadResponse.statusCode).toEqual(201);
+        expect(addedThreadResponseStatus).toEqual("success");
+        expect(addedCommentResponse.statusCode).toEqual(201);
+        expect(addedCommentResponseStatus).toEqual("success");
+        expect(addedComment).toBeInstanceOf(Object);
+        expect(addedComment.id).toBeDefined();
+        expect(addedComment.content).toBeDefined();
+        expect(addedComment.content).toEqual(addCommentPayload.content);
+        expect(addedComment.owner).toBeDefined();
+        expect(addCommentLikesResponse.statusCode).toEqual(401);
+        expect(addCommentLikesMessage).toEqual("Missing authentication");
+        expect(commentBeforeAddLikes).toHaveLength(1);
+        expect(commentBeforeAddLikes[0].likes).toEqual(0);
+        expect(commentAfterAddLikes).toHaveLength(1);
+        expect(commentAfterAddLikes[0].likes).toEqual(0);
+      });
+      it("throw NotFound error when comment is not exist", async () => {
+        // Arrange
+        const server = await createServer(container);
+        const accessToken = await ServerTestHelper.getAccessToken(server);
+
+        // add thread
+        const addThreadPayload = {
+          title: "New thread title",
+          body: "New thread body",
+        };
+        const addedThreadResponse = await server.inject({
+          method: "POST",
+          url: "/threads",
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+          payload: addThreadPayload,
+        });
+        const {
+          status: addedThreadResponseStatus,
+          data: { addedThread },
+        } = JSON.parse(addedThreadResponse.payload);
+
+        // add comment
+        const addCommentPayload = {
+          content: `New comment on thread ${addedThread.id}`,
+        };
+        const addedCommentResponse = await server.inject({
+          method: "POST",
+          url: `/threads/${addedThread.id}/comments`,
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+          payload: addCommentPayload,
+        });
+        const {
+          status: addedCommentResponseStatus,
+          data: { addedComment },
+        } = JSON.parse(addedCommentResponse.payload);
+        const commentBeforeAddLikes =
+          await ThreadsTableTestHelper.findCommentById(addedComment.id);
+
+        // Action
+        const addCommentLikesResponse = await server.inject({
+          method: "PUT",
+          url: `/threads/${addedThread.id}/comments/xxxx/likes`,
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        });
+        const {
+          status: addCommentLikesResponseStatus,
+          message: addCommentLikesMessage,
+        } = JSON.parse(addCommentLikesResponse.payload);
+        const commentAfterAddLikes =
+          await ThreadsTableTestHelper.findCommentById(addedComment.id);
+
+        // Assert
+        expect(addedThreadResponse.statusCode).toEqual(201);
+        expect(addedThreadResponseStatus).toEqual("success");
+        expect(addedCommentResponse.statusCode).toEqual(201);
+        expect(addedCommentResponseStatus).toEqual("success");
+        expect(addedComment).toBeInstanceOf(Object);
+        expect(addedComment.id).toBeDefined();
+        expect(addedComment.content).toBeDefined();
+        expect(addedComment.content).toEqual(addCommentPayload.content);
+        expect(addedComment.owner).toBeDefined();
+        expect(addCommentLikesResponse.statusCode).toEqual(404);
+        expect(addCommentLikesResponseStatus).toEqual("fail");
+        expect(addCommentLikesMessage).toEqual("Comment is not exist");
+        expect(commentBeforeAddLikes).toHaveLength(1);
+        expect(commentBeforeAddLikes[0].likes).toEqual(0);
+        expect(commentAfterAddLikes).toHaveLength(1);
+        expect(commentAfterAddLikes[0].likes).toEqual(0);
       });
     });
   });

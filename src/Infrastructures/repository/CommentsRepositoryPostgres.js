@@ -140,10 +140,7 @@ export default class CommentsRepositoryPostgress extends CommentsRepository {
             AND thread_id = $2`,
       values: [commentId, threadId],
     };
-    const result = await this._pool.query(query);
-    if (!result.rowCount) {
-      throw new NotFoundError("Comment Not Found");
-    }
+    await this._pool.query(query);
   }
 
   async _decrementCommentLikes({ threadId, commentId }) {
@@ -153,10 +150,7 @@ export default class CommentsRepositoryPostgress extends CommentsRepository {
             AND thread_id = $2`,
       values: [commentId, threadId],
     };
-    const result = await this._pool.query(query);
-    if (!result.rowCount) {
-      throw new NotFoundError("Comment Not Found");
-    }
+    await this._pool.query(query);
   }
 
   async _addUserCommentLikes({ threadId, commentId, userId }) {
