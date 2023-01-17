@@ -4,6 +4,7 @@ import AddThreadUseCase from "#Applications/usecase/threads/AddThreadUseCase";
 import DeleteCommentOnThreadUseCase from "#Applications/usecase/threads/DeleteCommentOnThreadUseCase";
 import DeleteReplyOnCommentUseCase from "#Applications/usecase/threads/DeleteReplyOnCommentUseCase";
 import GetThreadDetailsUseCase from "#Applications/usecase/threads/GetThreadDetailsUseCase";
+import UpdateCommentLikesUseCase from "#Applications/usecase/threads/UpdateCommentLikesUseCase";
 import autoBind from "auto-bind";
 
 export default class ThreadsHandler {
@@ -138,6 +139,26 @@ export default class ThreadsHandler {
       data: {
         thread,
       },
+    });
+    response.code(200);
+    return response;
+  }
+
+  async updateCommentLikesHandler(request, h) {
+    const updateCommentLikesUseCase = this._container.getInstance(
+      UpdateCommentLikesUseCase.name
+    );
+    const { id: credentialId } = request.auth.credentials;
+    const { threadId, commentId } = request.params;
+    const useCasePayload = {
+      threadId,
+      commentId,
+      userId: credentialId,
+    };
+    // execute update likes
+    await updateCommentLikesUseCase.execute(useCasePayload);
+    const response = h.response({
+      status: "success",
     });
     response.code(200);
     return response;

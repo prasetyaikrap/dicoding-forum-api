@@ -40,6 +40,7 @@ export default class ThreadRepositoryPostgres extends ThreadRepository {
               tc.created_at AS tc_date,
               tc.is_deleted AS tc_is_deleted,
               tc.reply_comment_id AS tc_reply_comment_id,
+              tc.likes AS tc_likes,
               utc.username AS utc_username
             FROM threads t
             JOIN users ut ON t.owner = ut.id

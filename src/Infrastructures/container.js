@@ -32,6 +32,7 @@ import AddReplyOnCommentUseCase from "#Applications/usecase/threads/AddReplyOnCo
 import DeleteCommentOnThreadUseCase from "#Applications/usecase/threads/DeleteCommentOnThreadUseCase";
 import DeleteReplyOnCommentUseCase from "#Applications/usecase/threads/DeleteReplyOnCommentUseCase";
 import GetThreadDetailsUseCase from "#Applications/usecase/threads/GetThreadDetailsUseCase";
+import UpdateCommentLikesUseCase from "#Applications/usecase/threads/UpdateCommentLikesUseCase";
 
 // creating container
 const container = createContainer();
@@ -263,6 +264,19 @@ container.register([
         {
           name: "threadRepository",
           internal: ThreadRepository.name,
+        },
+      ],
+    },
+  },
+  {
+    key: UpdateCommentLikesUseCase.name,
+    Class: UpdateCommentLikesUseCase,
+    parameter: {
+      injectType: "destructuring",
+      dependencies: [
+        {
+          name: "commentsRepository",
+          internal: CommentsRepository.name,
         },
       ],
     },

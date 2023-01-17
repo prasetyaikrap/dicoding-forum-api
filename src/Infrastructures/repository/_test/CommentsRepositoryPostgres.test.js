@@ -604,4 +604,113 @@ describe("CommentsRepositoryPostgres", () => {
       ).rejects.toThrow(NotFoundError);
     });
   });
+  describe("updateCommentLikes function", () => {
+    it("Should increase likes correctly", async () => {
+      // Arrange
+      const fakeIdGenerator = () => "12345";
+      const threadRepositoryPostgres = new ThreadRepositoryPostgres(
+        pool,
+        fakeIdGenerator
+      );
+      const commentsRepositoryPostgres = new CommentsRepositoryPostgres(
+        pool,
+        fakeIdGenerator
+      );
+
+      // add thread
+      const addThread = {
+        ownerId: "user-12345",
+        title: "new test title",
+        body: "new test body",
+      };
+      await threadRepositoryPostgres.addNewThread(addThread);
+
+      // add comment
+      const addComment = {
+        ownerId: "user-12345",
+        threadId: "thread-12345",
+        content: "new comment on thread thread-12345 #1",
+      };
+      await commentsRepositoryPostgres.addCommentOnThread(addComment);
+      const commentBeforeAddLikes =
+        await ThreadsTableTestHelper.findCommentById("comment-12345");
+
+      // Action
+      // add likes to comment
+      const addCommentLikes = {
+        threadId: "thread-12345",
+        commentId: "comment-12345",
+        userId: "user-12345",
+      };
+      await commentsRepositoryPostgres.updateCommentLikes(addCommentLikes);
+      const commentAfterAddLikes = await ThreadsTableTestHelper.findCommentById(
+        "comment-12345"
+      );
+
+      // Assert
+      expect(commentBeforeAddLikes).toHaveLength(1);
+      expect(commentBeforeAddLikes[0].likes).toEqual(0);
+      expect(commentAfterAddLikes).toHaveLength(1);
+      expect(commentAfterAddLikes[0].likes).toEqual(1);
+    });
+    it("Should decrease likes correctly", async () => {
+      // Arrange
+      const fakeIdGenerator = () => "12345";
+      const threadRepositoryPostgres = new ThreadRepositoryPostgres(
+        pool,
+        fakeIdGenerator
+      );
+      const commentsRepositoryPostgres = new CommentsRepositoryPostgres(
+        pool,
+        fakeIdGenerator
+      );
+
+      // add thread
+      const addThread = {
+        ownerId: "user-12345",
+        title: "new test title",
+        body: "new test body",
+      };
+      await threadRepositoryPostgres.addNewThread(addThread);
+
+      // add comment
+      const addComment = {
+        ownerId: "user-12345",
+        threadId: "thread-12345",
+        content: "new comment on thread thread-12345 #1",
+      };
+      await commentsRepositoryPostgres.addCommentOnThread(addComment);
+      const commentBeforeAddLikes =
+        await ThreadsTableTestHelper.findCommentById("comment-12345");
+
+      // Action
+      // add likes to comment
+      const addCommentLikes = {
+        threadId: "thread-12345",
+        commentId: "comment-12345",
+        userId: "user-12345",
+      };
+      await commentsRepositoryPostgres.updateCommentLikes(addCommentLikes);
+      const commentAfterAddLikes = await ThreadsTableTestHelper.findCommentById(
+        "comment-12345"
+      );
+      // delete likes to comment
+      const deleteCommentLikes = {
+        threadId: "thread-12345",
+        commentId: "comment-12345",
+        userId: "user-12345",
+      };
+      await commentsRepositoryPostgres.updateCommentLikes(deleteCommentLikes);
+      const commentAfterDeleteLikes =
+        await ThreadsTableTestHelper.findCommentById("comment-12345");
+
+      // Assert
+      expect(commentBeforeAddLikes).toHaveLength(1);
+      expect(commentBeforeAddLikes[0].likes).toEqual(0);
+      expect(commentAfterAddLikes).toHaveLength(1);
+      expect(commentAfterAddLikes[0].likes).toEqual(1);
+      expect(commentAfterDeleteLikes).toHaveLength(1);
+      expect(commentAfterDeleteLikes[0].likes).toEqual(0);
+    });
+  });
 });
